@@ -11,6 +11,7 @@ export type ApolloContext = {};
 const apollo = new ApolloServer({
   schema,
   context: async ({ ctx }: any) => {
+    ctx.a = 1;
     try {
       // await consumeUser(ctx);
       return {
