@@ -9,11 +9,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x] 
     steps:
-      - name: Run SSH command
-        uses: garygrossgarten/github-action-ssh@v0.5.0
+      - name: Checkout source code.   # 레포지토리 체크아웃
+        uses: actions/checkout@master
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          command: export BRANCH="dev"; bmart/scripts/client_build.sh
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          privateKey: ${{ secrets.PRIVATE_KEY}}
+          node-version: ${{ matrix.node-version }}
+          registry-url: "https://npm.pkg.github.com"
+ 
+      - name: Build    # 의존 파일 설치
+        run: |
+          cd client
+          yarn
+          yarn build
+        
+      - name: ssh deploy
+        uses: easingthemes/ssh-deploy@v2.1.4
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          ARGS: -rltgoDzvO"
+          SOURCE: "client/build/"
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: "./bmart/client/build/""
