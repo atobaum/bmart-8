@@ -108,5 +108,10 @@ dist
 .tern-port
 
 .env
+<<<<<<< HEAD
 
 build
+=======
+migrations
+.vscode
+>>>>>>> setting: gitignore 추가
