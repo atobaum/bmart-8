@@ -9,3 +9,9 @@ services:
       - './client/build:/etc/nginx/http'
     ports:
       - '80:80'
+  appserver:
+    build:
+      context: ./server
+    ports:
+      - '3306:3306'
+    container_name: appserver
