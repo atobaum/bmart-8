@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const FooterBlock = styled.ol`
+  background-color: white;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -13,7 +14,7 @@ const FooterBlock = styled.ol`
 
 type FooterProps = {};
 
-const Footer: React.FC<FooterProps> = ({}) => {
+const Footer: React.FC<FooterProps> = () => {
   return (
     <FooterBlock>
       <li>메뉴</li>
