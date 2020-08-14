@@ -1,11 +1,13 @@
 #! /bin/bash
 if [ -z $BRANCH ]; then
-    echo "Branch name is empty: specify to BRANCH"
+    echo "Branch name is empty. Proceed with current branch."
     exit;
+else
+    git checkout "$BRANCH"
 fi
 
-git checkout "$BRANCH"
 if [ $? != 0 ]; then
+    echo "Branch $BRANCH is not exists."
     exit;
 fi
 git pull
