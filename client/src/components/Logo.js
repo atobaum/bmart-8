@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import LogoIcon from '../static/icon/icon-logo.png';
 

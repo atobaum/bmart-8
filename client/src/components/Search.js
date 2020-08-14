@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import SearchIcon from '../static/icon/icon-search.png';
 
@@ -22,7 +22,7 @@ const SearchBlock = styled.div`
     input {
       left: 1.8em;
       position: absolute;
-      border: none;
+    border: none;
       width: 90%;
       height: 90%;
       background-color: #eff1f3;
