@@ -26,7 +26,9 @@ jobs:
           cd client
           yarn
           yarn build
-
+        env:
+          CI: false
+        
       - name: ssh deploy
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
