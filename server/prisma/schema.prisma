@@ -75,6 +75,7 @@ model product {
   deleted_at    DateTime?
   name          String
   content       String?
+  img_url       String?
   price         Int             @default(0)
   sales         Int             @default(0)
   discount      Int             @default(0)
