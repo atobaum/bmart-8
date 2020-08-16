@@ -1,15 +1,14 @@
 #! /bin/bash
 if [ -z $BRANCH ]; then
     echo "Branch name is empty. Proceed with current branch."
-    exit;
 else
     git checkout "$BRANCH"
+    if [ $? != 0 ]; then
+        echo "Branch $BRANCH is not exists."
+        exit;
+    fi
 fi
 
-if [ $? != 0 ]; then
-    echo "Branch $BRANCH is not exists."
-    exit;
-fi
 git fetch
 
 cd client
