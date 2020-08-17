@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 
-import CategoryList from '../components/CategoryList';
+import CategoryContent from '../components/CategoryContent';
+import CategoryTitle from '../components/CategoryTitle';
 
-const GET_CATEGORY = gql`
+const GetFirstCategory = gql`
   query {
     firstCategories {
       name
@@ -21,7 +22,7 @@ const CategoryPageBlock = styled.div``;
 function CategoryPage() {
   return (
     <CategoryPageBlock>
-      <Query query={GET_CATEGORY}>
+      <Query query={GetFirstCategory}>
         {({ data, loading, error }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error...</p>;
@@ -29,9 +30,9 @@ function CategoryPage() {
           data.firstCategories.forEach((firstCategory) => {
             categoryList.push(
               <>
-                <div>{firstCategory.name}</div>
-                <CategoryList
-                  CategoryList={firstCategory.children}></CategoryList>
+                <CategoryTitle>{firstCategory.name}</CategoryTitle>
+                <CategoryContent
+                  CategoryContent={firstCategory.children}></CategoryContent>
               </>
             );
           });
