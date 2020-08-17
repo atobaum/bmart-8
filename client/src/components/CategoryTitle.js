@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import palette from '../lib/styles/palette';
 
 const CategoryTitleBlock = styled.div`
-  /* position: absolute; */
   font-size: 1.5em;
+  text-align: left;
   div {
     height: 0.1em;
-    width: 100%;
+    width: 25%;
     border: solid 0.1em ${palette.baemint};
     background-color: ${palette.baemint};
     top: 1em;
@@ -17,7 +17,7 @@ const CategoryTitleBlock = styled.div`
 function CategoryTitle(props) {
   return (
     <CategoryTitleBlock>
-      {props.children}
+      {props.title}
       <div />
     </CategoryTitleBlock>
   );

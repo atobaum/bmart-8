@@ -12,6 +12,7 @@ const GetFirstCategory = gql`
     firstCategories {
       name
       children {
+        id
         name
       }
     }
@@ -24,15 +25,22 @@ function CategoryPage() {
     <CategoryPageBlock>
       <Query query={GetFirstCategory}>
         {({ data, loading, error }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>Error...</p>;
+          if (loading) return '';
+          if (error) return '';
           let categoryList = [];
           data.firstCategories.forEach((firstCategory) => {
+            let childList = [];
+            for (let i = 0; i < firstCategory.children.length; i += 2) {
+              const left = firstCategory.children[i];
+              const right = firstCategory.children[i + 1];
+              childList.push(
+                <CategoryContent data={[left, right]}></CategoryContent>
+              );
+            }
             categoryList.push(
               <>
-                <CategoryTitle>{firstCategory.name}</CategoryTitle>
-                <CategoryContent
-                  CategoryContent={firstCategory.children}></CategoryContent>
+                <CategoryTitle title={firstCategory.name}></CategoryTitle>
+                {childList}
               </>
             );
           });
