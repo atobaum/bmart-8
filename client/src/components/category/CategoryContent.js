@@ -15,11 +15,11 @@ const CategoryContentBlock = styled.div`
 
   .active {
     font-weight: bold;
-    background-color: ${palette.gray100};
+    background-color: ${palette.gray200};
   }
 
   .third {
-    background-color: ${palette.gray100};
+    background-color: ${palette.gray200};
   }
 
   .second > div,
