@@ -41,7 +41,12 @@ function CategoryContent(props) {
   const [selected, setSelected] = useState(false);
   const [showThird, setShowThird] = useState(false);
 
+  props.setCloseCallback(() => {
+    setShowThird(false);
+  });
+
   function toggleThirdCategory(index) {
+    props.closeAllContent();
     if (showThird && selected === index) {
       setShowThird(false);
     } else {

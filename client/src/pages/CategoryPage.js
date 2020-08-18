@@ -49,6 +49,16 @@ const CategoryPageBlock = styled.div`
   }
 `;
 function CategoryPage() {
+  let closeCallbackList = [];
+  function closeAllContent() {
+    for (const cb of closeCallbackList) {
+      cb();
+    }
+  }
+  function setCloseCallback(cb) {
+    closeCallbackList.push(cb);
+  }
+
   return (
     <CategoryPageBlock>
       <div className="back">
@@ -70,9 +80,13 @@ function CategoryPage() {
               const left = firstCategory.children[i];
               const right = firstCategory.children[i + 1];
               childList.push(
-                <CategoryContent data={[left, right]}></CategoryContent>
+                <CategoryContent
+                  setCloseCallback={setCloseCallback}
+                  closeAllContent={closeAllContent}
+                  data={[left, right]}></CategoryContent>
               );
             }
+
             categoryList.push(
               <div className="Category">
                 <CategoryTitle title={firstCategory.name}></CategoryTitle>
