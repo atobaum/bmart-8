@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const CarouselBlock = styled.div`
+const CarouselBlock = styled.div<{ isDragging: boolean }>`
   width: 70%;
   height: 300px;
   overflow: hidden;
@@ -10,7 +10,10 @@ const CarouselBlock = styled.div`
   .wrapper {
     display: flex;
     height: 100%;
-    transition: transform 400ms ease-in-out;
+    touch-action: none;
+    ${({ isDragging }) => {
+      return !isDragging ? 'transition: transform 400ms ease-in-out;' : '';
+    }}
 
     & * {
       box-sizing: border-box;
@@ -72,11 +75,20 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   const containerRef = useRef(null);
   const [curBanner, setCurBanner] = useState(0);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
-  useEffect(() => {
+
+  // 마우스로 화면을 눌렀을 때의 X좌표
+  const [startX, setStartX] = useState<any>(null);
+
+  const setBanner = (idx: number, offset: number = 0) => {
     const container = containerRef.current as any;
-    container.style.transform = `translateX(${
-      -curBanner * container.offsetWidth
-    }px)`;
+    container.style.transform = `translateX(${-(
+      curBanner * container.offsetWidth +
+      offset
+    )}px)`;
+  };
+
+  useEffect(() => {
+    setBanner(curBanner);
 
     if (timeoutId !== null) {
       clearTimeout(timeoutId);
@@ -91,9 +103,32 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
     // eslint-disable-next-line
   }, [curBanner]);
 
+  const dragStartHandler = (evt: any) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    setStartX(evt.clientX);
+    clearTimeout(timeoutId!);
+    setTimeoutId(null);
+  };
+  const dragMoveHandler = (evt: any) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    if (startX) setBanner(curBanner, startX - evt.clientX);
+  };
+  const dragEndHandler = (evt: any) => {
+    evt.stopPropagation();
+    setCurBanner(curBanner + (evt.clientX - startX > 0 ? -1 : 1));
+    setStartX(null);
+  };
+
   return (
-    <CarouselBlock>
-      <div className="wrapper" ref={containerRef}>
+    <CarouselBlock isDragging={startX !== null}>
+      <div
+        className="wrapper"
+        ref={containerRef}
+        onPointerDown={dragStartHandler}
+        onPointerMove={dragMoveHandler}
+        onPointerUp={dragEndHandler}>
         {images.map(({ imageUrl, altString, routeUrl }, idx) => {
           return (
             <div key={idx}>
