@@ -49,14 +49,13 @@ const CategoryPageBlock = styled.div`
   }
 `;
 function CategoryPage() {
-  let closeCallbackList = [];
-  function closeAllContent() {
-    for (const cb of closeCallbackList) {
-      cb();
-    }
+  let selectedClose;
+  function closeContent() {
+    if (!selectedClose) return;
+    selectedClose();
   }
   function setCloseCallback(cb) {
-    closeCallbackList.push(cb);
+    selectedClose = cb;
   }
 
   return (
@@ -82,7 +81,7 @@ function CategoryPage() {
               childList.push(
                 <CategoryContent
                   setCloseCallback={setCloseCallback}
-                  closeAllContent={closeAllContent}
+                  closeContent={closeContent}
                   data={[left, right]}></CategoryContent>
               );
             }
