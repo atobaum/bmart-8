@@ -12,7 +12,7 @@ import Footer from './components/Footer';
 import CategoryPage from './pages/CategoryPage';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000',
+  uri: '/graphql',
 });
 
 function App() {
