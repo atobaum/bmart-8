@@ -53,6 +53,7 @@ type CarouselProps = {
   transitionTime: number;
 };
 
+// TODO: refactor
 const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
   // to get width of the container
   const containerRef = useRef<HTMLDivElement>(null);
@@ -76,20 +77,27 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
     )}px)`;
   };
 
+  const createTimer = (fn: Function, timeout: number) => {
+    const timerId = setTimeout(fn, timeout);
+    setTimeoutId(timerId);
+  };
+
+  const removeTimeer = () => {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+  };
+
+  const checkEdgeCase = (idx: number) => idx === 0 || idx === images.length + 1;
   const moveBanner = (idx: number, instantMove: boolean = false) => {
-    if (idx === 0) {
+    if (checkEdgeCase(idx)) {
       setTimeout(() => {
         // To remove transition animation
         setStartX(1);
-        moveBanner(images.length, true);
-        (window as any).requestIdleCallback(() => {
-          setStartX(null);
-        });
-      }, cssTransitionTime);
-    } else if (idx === images.length + 1) {
-      setTimeout(() => {
-        setStartX(1);
-        moveBanner(1, true);
+        // 0 if idx === images.length; 1 if idx === images.length+1
+        const nextIdx = idx === 0 ? images.length : 1;
+        moveBanner(nextIdx, true);
         (window as any).requestIdleCallback(() => {
           setStartX(null);
         });
@@ -97,21 +105,13 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
     }
     translateBanner(idx);
 
-    if (timeoutId !== null) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
-
+    removeTimeer();
     setTimeout(
       () => {
         // To update indicator
         setCurBannerIdx(idx);
         if (idx > 0 && idx < images.length + 1) {
-          const newTimeoutId = setTimeout(
-            () => moveBanner(idx + 1),
-            transitionTime
-          );
-          setTimeoutId(newTimeoutId);
+          createTimer(() => moveBanner(idx + 1), transitionTime);
         }
       },
       instantMove ? 0 : cssTransitionTime
