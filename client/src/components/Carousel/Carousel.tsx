@@ -56,6 +56,7 @@ type CarouselProps = {
 const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
   // to get width of the container
   const containerRef = useRef(null);
+  const cssTransitionTime = Math.min(transitionTime / 3, 400);
   const [curBanner, setCurBanner] = useState(1);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
@@ -79,17 +80,17 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
         setCurBanner(images.length);
         setTimeout(() => {
           setStartX(null);
-        }, 0);
+        }, 10);
         //TODO: remove magic number
-      }, 400);
+      }, cssTransitionTime);
     } else if (curBanner === images.length + 1) {
       setTimeout(() => {
         setStartX(1);
         setCurBanner(1);
         setTimeout(() => {
           setStartX(null);
-        }, 0);
-      }, 400);
+        }, 10);
+      }, cssTransitionTime);
     }
     translateBanner(curBanner);
 
@@ -122,7 +123,9 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
   const lastBanner = images[images.length - 1];
 
   return (
-    <CarouselBlock isDragging={startX !== null} transitionTime={400}>
+    <CarouselBlock
+      isDragging={startX !== null}
+      transitionTime={cssTransitionTime}>
       <div
         className="wrapper"
         ref={containerRef}
