@@ -62,6 +62,8 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
   // 마우스로 화면을 눌렀을 때의 X좌표
+  // Remove transition animation if not null.
+  // Therefore also be used to disable animation in edge cases.
   const [startX, setStartX] = useState<number | null>(1);
 
   // offsetIdx번째 아이템에서 dx만큼 더 translate
@@ -74,12 +76,12 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
     )}px)`;
   };
 
-  const moveBanner = (idx: number) => {
+  const moveBanner = (idx: number, instantMove: boolean = false) => {
     if (idx === 0) {
       setTimeout(() => {
         // To remove transition animation
         setStartX(1);
-        moveBanner(images.length);
+        moveBanner(images.length, true);
         (window as any).requestIdleCallback(() => {
           setStartX(null);
         });
@@ -87,7 +89,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
     } else if (idx === images.length + 1) {
       setTimeout(() => {
         setStartX(1);
-        moveBanner(1);
+        moveBanner(1, true);
         (window as any).requestIdleCallback(() => {
           setStartX(null);
         });
@@ -100,15 +102,20 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
       setTimeoutId(null);
     }
 
-    // To set indicator
-    setCurBannerIdx(idx);
-    if (idx > 0 && idx < images.length + 1) {
-      const newTimeoutId = setTimeout(
-        () => moveBanner(idx + 1),
-        transitionTime
-      );
-      setTimeoutId(newTimeoutId);
-    }
+    setTimeout(
+      () => {
+        // To update indicator
+        setCurBannerIdx(idx);
+        if (idx > 0 && idx < images.length + 1) {
+          const newTimeoutId = setTimeout(
+            () => moveBanner(idx + 1),
+            transitionTime
+          );
+          setTimeoutId(newTimeoutId);
+        }
+      },
+      instantMove ? 0 : cssTransitionTime
+    );
   };
 
   useEffect(() => {
