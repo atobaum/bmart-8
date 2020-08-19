@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import addPointerEventHandlers from '../utils';
 
 const PullToRefreshBlock = styled.div`
   background: yellow;
@@ -33,17 +34,16 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({ onRefresh }: any) => {
       setSize(0);
       setStartY(null);
     };
-    document.addEventListener('pointerdown', startHandler);
-    document.addEventListener('pointermove', moveHandler);
-    document.addEventListener('pointerup', endHandler);
-    return () => {
-      document.removeEventListener('pointerdown', startHandler);
-      document.removeEventListener('pointermove', moveHandler);
-      document.removeEventListener('pointerup', endHandler);
-    };
+    return addPointerEventHandlers(document, {
+      onDown: startHandler,
+      onMove: moveHandler,
+      onUp: endHandler,
+    });
   }, [window.scrollY, startY, size]);
-  return (
-    <PullToRefreshBlock style={{ height: `${size}px` }}></PullToRefreshBlock>
-  );
+  return size > 0 ? (
+    <PullToRefreshBlock style={{ height: `${size}px` }}>
+      {size === maxSize ? '땡겨요' : '놓아요'}
+    </PullToRefreshBlock>
+  ) : null;
 };
 export default PullToRefresh;
