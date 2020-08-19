@@ -40,13 +40,12 @@ jobs:
           aws s3 cp \
             --region ap-northeast-2 \
             build.tgz s3://bmart-8/client_build/build.tgz
-
-      - name: ssh deploy
-        uses: easingthemes/ssh-deploy@v2.1.4
-        env:
-          ARGS: '-rltgoDzvO'
-          SOURCE: 'client/build/'
-          REMOTE_HOST: ${{ secrets.HOST }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          TARGET: './bmart/client/build/'
+      # - name: ssh deploy
+      #   uses: easingthemes/ssh-deploy@v2.1.4
+      #   env:
+      #     ARGS: '-rltgoDzvO'
+      #     SOURCE: 'client/build/'
+      #     REMOTE_HOST: ${{ secrets.HOST }}
+      #     REMOTE_USER: ${{ secrets.USERNAME }}
+      #     SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      #     TARGET: './bmart/client/build/'
