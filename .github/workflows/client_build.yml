@@ -26,6 +26,8 @@ jobs:
           cd client
           yarn
           yarn build
+          cd build
+          tar -cvzf build.tgz *
         env:
           CI: false
 
@@ -37,7 +39,7 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            client/build s3://bmart-8/client_build
+            client/build/build.tgz s3://bmart-8/client_build/build.tgz
 
       - name: ssh deploy
         uses: easingthemes/ssh-deploy@v2.1.4
