@@ -1,38 +1,47 @@
 import passport from 'passport';
-import jwt from 'jsonwebtoken';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import google from 'passport-google-oauth20';
 import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
 import '../env';
 
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECERT,
-};
+const prisma = new PrismaClient();
+const GoogleStrategy = google.Strategy;
 
-const verifyUser = async (payload: any, done: any) => {
-  console.log('payload', payload);
-  try {
-    return done(null, true);
-    // 유저 api 만들면 적용
-    // const user = await prisma.user({ id: payload.id });
-    // if (user) {
-    //   return done(null, user);
-    // } else {
-    //   return done(null, false);
-    // }
-  } catch (error) {
-    return done(error, false);
-  }
-};
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 
-passport.use(new JwtStrategy(jwtOptions, verifyUser));
-passport.initialize();
-//api 맨들때 쓸거 const generateJWTToken = (id: any) => jwt.sign({ id }, process.env.JWT_SECERT!);
-
-export const authenticateJWT = (req: any, res: any, next: any) => {
-  passport.authenticate('jwt', { session: false }, (error, user) => {
-    req.user = user;
-    next();
-  })(req, res, res);
-};
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      callbackURL: `http://localhost:4000/api/google/callback`,
+    },
+    async function (
+      accessToken,
+      refreshToken,
+      { provider, _json: profile },
+      callback
+    ) {
+      try {
+        const user = await prisma.user.upsert({
+          where: { email_provider: { email: profile.email, provider } },
+          select: { id: true, email: true, provider: true, role: true },
+          update: {},
+          create: { provider, email: profile.email },
+        });
+        await prisma.user_profile.upsert({
+          where: { user_id: user.id },
+          update: {},
+          create: { name: profile.name, user: { connect: { id: user.id } } },
+        });
+        return callback('', user);
+      } catch (error) {
+        return callback(error);
+      }
+    }
+  )
+);
