@@ -57,11 +57,12 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
   // to get width of the container
   const containerRef = useRef(null);
   const cssTransitionTime = Math.min(transitionTime / 3, 400);
-  const [curBanner, setCurBanner] = useState(1);
+
+  const [curBannerIdx, setCurBannerIdx] = useState(1);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
   // 마우스로 화면을 눌렀을 때의 X좌표
-  const [startX, setStartX] = useState<any>(null);
+  const [startX, setStartX] = useState<number | null>(null);
 
   // offsetIdx번째 아이템에서 dx만큼 더 translate
   // Carousel을 이동시킬때 사용
@@ -73,39 +74,47 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
     )}px)`;
   };
 
-  useEffect(() => {
-    if (curBanner === 0) {
+  const moveBanner = (idx: number) => {
+    if (idx === 0) {
       setTimeout(() => {
+        // To remove transition animation
         setStartX(1);
-        setCurBanner(images.length);
-        setTimeout(() => {
+        moveBanner(images.length);
+        (window as any).requestIdleCallback(() => {
           setStartX(null);
-        }, 10);
-        //TODO: remove magic number
+        });
       }, cssTransitionTime);
-    } else if (curBanner === images.length + 1) {
+    } else if (idx === images.length + 1) {
       setTimeout(() => {
         setStartX(1);
-        setCurBanner(1);
-        setTimeout(() => {
+        moveBanner(1);
+        (window as any).requestIdleCallback(() => {
           setStartX(null);
-        }, 10);
+        });
       }, cssTransitionTime);
     }
-    translateBanner(curBanner);
+    translateBanner(idx);
 
     if (timeoutId !== null) {
       clearTimeout(timeoutId);
       setTimeoutId(null);
     }
 
-    const newTimeoutId = setTimeout(
-      () => setCurBanner(curBanner + 1),
-      transitionTime
-    );
-    setTimeoutId(newTimeoutId);
+    // To set indicator
+    setCurBannerIdx(idx);
+    if (idx > 0 && idx < images.length + 1) {
+      const newTimeoutId = setTimeout(
+        () => moveBanner(idx + 1),
+        transitionTime
+      );
+      setTimeoutId(newTimeoutId);
+    }
+  };
+
+  useEffect(() => {
+    moveBanner(curBannerIdx);
     // eslint-disable-next-line
-  }, [curBanner]);
+  }, []);
 
   const dragStartHandler = (evt: any) => {
     setStartX(evt.clientX);
@@ -113,10 +122,15 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
     setTimeoutId(null);
   };
   const dragMoveHandler = (evt: any) => {
-    if (startX) translateBanner(curBanner, startX - evt.clientX);
+    if (startX) translateBanner(curBannerIdx, startX - evt.clientX);
   };
   const dragEndHandler = (evt: any) => {
-    setCurBanner(curBanner + (evt.clientX - startX > 0 ? -1 : 1));
+    const diff = evt.clientX - startX!;
+    const containerWidth = (containerRef.current as any).getBoundingClientRect()
+      .width;
+    if (Math.abs(diff) > containerWidth / 4)
+      moveBanner(curBannerIdx + (diff > 0 ? -1 : 1));
+    else moveBanner(curBannerIdx);
     setStartX(null);
   };
 
@@ -154,8 +168,8 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
       </div>
       <CarouselSelector
         length={images.length}
-        onChange={(idx) => setCurBanner(idx)}
-        activeIdx={(curBanner - 1 + images.length) % images.length}
+        onChange={(idx) => moveBanner(idx)}
+        activeIdx={(curBannerIdx - 1 + images.length) % images.length}
       />
     </CarouselBlock>
   );
