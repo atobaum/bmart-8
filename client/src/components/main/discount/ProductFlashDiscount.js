@@ -51,15 +51,14 @@ const ProductFlashDiscountBlock = styled.div`
     background-color: white;
     margin-bottom: 0.3rem;
     padding-bottom: 0.2rem;
-
     font-size: 1rem;
   }
 
   .Bag {
+    position: relative;
+    bottom: 1.5rem;
+    left: 10rem;
     color: ${palette.baemint200};
-    position: absolute;
-    top: 30rem;
-    right: 1.5rem;
     z-index: 1;
   }
 `;
@@ -119,9 +118,9 @@ function ProductFlashDiscount() {
           <ProductContent
             title={data[select].title}
             price={data[select].price}></ProductContent>
-        </div>
-        <div className="Bag">
-          <Bag></Bag>
+          <div className="Bag">
+            <Bag></Bag>
+          </div>
         </div>
       </div>
     </ProductFlashDiscountBlock>
