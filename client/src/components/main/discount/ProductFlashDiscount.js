@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import palette from '../../../lib/styles/palette';
+
 import ProductPhoto from '../common/ProductPhoto';
 import ProductDiscount from './ProductDiscount';
 import ProductContent from '../common/ProductContent';
+import Bag from '../common/Bag';
 
 const ProductFlashDiscountBlock = styled.div`
   .ProductTitle {
@@ -42,6 +45,14 @@ const ProductFlashDiscountBlock = styled.div`
 
   .ProductContent {
     font-size: 1rem;
+  }
+
+  .Bag {
+    color: ${palette.baemint200};
+    position: absolute;
+    top: 30rem;
+    right: 1.5rem;
+    z-index: 1;
   }
 `;
 
@@ -100,6 +111,9 @@ function ProductFlashDiscount() {
           <ProductContent
             title={data[select].title}
             price={data[select].price}></ProductContent>
+        </div>
+        <div className="Bag">
+          <Bag></Bag>
         </div>
       </div>
     </ProductFlashDiscountBlock>
