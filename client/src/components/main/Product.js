@@ -4,6 +4,7 @@ import ProductReadyFor from './readyFor/ProductReadyFor';
 import ProductFlashDiscount from './discount/ProductFlashDiscount';
 import ProductWhatEat from './whatEat/ProductWhatEat';
 import ProductNew from './new/ProductNew';
+import ProductSellGood from './sellGood/ProductSellGood';
 
 const ProductBlock = styled.div``;
 
@@ -14,6 +15,7 @@ function Product() {
       <ProductFlashDiscount></ProductFlashDiscount>
       <ProductWhatEat></ProductWhatEat>
       <ProductNew></ProductNew>
+      <ProductSellGood></ProductSellGood>
     </ProductBlock>
   );
 }
