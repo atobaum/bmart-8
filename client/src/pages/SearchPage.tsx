@@ -5,6 +5,7 @@ import { gql } from 'apollo-boost';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import useDebounce from '../hooks/useDebounce';
+import { useHistory } from 'react-router-dom';
 
 const SearchHistoryItem: React.FC<{
   onDelete: () => void;
@@ -23,6 +24,7 @@ const SearchHistoryItem: React.FC<{
 const SearchPageBlock = styled.div``;
 
 const SearchPage: React.FC = () => {
+  const history = useHistory();
   const [query, setQuery] = useState('');
   const { data: searchHistoryData } = useQuery(gql`
     query getSearchHistory {
@@ -48,13 +50,16 @@ const SearchPage: React.FC = () => {
 
   return (
     <SearchPageBlock>
-      <input
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          instantSearchDebounce(e.target.value);
-        }}
-      />
+      <div>
+        <button onClick={() => history.goBack()}>go back</button>
+        <input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            instantSearchDebounce(e.target.value);
+          }}
+        />
+      </div>
       {instantSearchData
         ? instantSearchData.instantSearch.map((name: string) => {
             return <div key={name}>{name}</div>;
