@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProductTitle from './ProductTitle';
-import ProductInfo from './ProductInfo';
+import ProductTitle from '../common/ProductTitle';
+import ProductInfo from '../common/ProductInfo';
 
 const ProductReadyForBlock = styled.div`
   .ProductTitle {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ProductPhoto from './ProductPhoto';
+import ProductPhoto from '../common/ProductPhoto';
 import ProductDiscount from './ProductDiscount';
-import ProductContent from './ProductContent';
+import ProductContent from '../common/ProductContent';
 
 const ProductFlashDiscountBlock = styled.div`
   .ProductTitle {

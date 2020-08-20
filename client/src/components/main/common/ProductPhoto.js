@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import WishButton from '../WishButton';
+import WishButton from '../../WishButton';
 
 const ProductPhotoBlock = styled.div`
   border-radius: 0.2rem;
-  width:100%;
-  height:6rem;
+  width: 100%;
+  height: 6rem;
   position: relative;
   box-sizing: border-box;
 
@@ -27,7 +27,7 @@ const ProductPhotoBlock = styled.div`
 
 function ProductPhoto({ wishbutton, onClick, index, url, select = -1 }) {
   return (
-    <ProductPhotoBlock className={select == index ? ' active' : ''}>
+    <ProductPhotoBlock className={select === index ? ' active' : ''}>
       <img
         className={'Thumbnail'}
         src={url}

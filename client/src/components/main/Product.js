@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProductReadyFor from './ProductReadyFor';
-import ProductFlashDiscount from './ProductFlashDiscount';
+import ProductReadyFor from './readyFor/ProductReadyFor';
+import ProductFlashDiscount from './discount/ProductFlashDiscount';
 const ProductBlock = styled.div``;
 
 function Product() {

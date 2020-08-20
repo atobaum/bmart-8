@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import WishButton from '../WishButton';
+import WishButton from '../../WishButton';
 
 
 const ProductDiscountBlock = styled.div`
