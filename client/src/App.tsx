@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import styled from 'styled-components';
+
 import { Switch, Route } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
@@ -15,26 +17,33 @@ const client = new ApolloClient({
   uri: '/graphql',
 });
 
+const AppBlock = styled.div`
+  max-width: 100%;
+  overflow-x: hidden;
+`;
+
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <Switch>
-          <Route path="/CategoryPage">
-            <CategoryPage />
-          </Route>
-          <Route path="/cart">
-            <CartPage />
-          </Route>
-          <Route path="/profile">
-            <UserProfilePage />
-          </Route>
-          <Route path="/">
-            <MainPage />
-          </Route>
-        </Switch>
-        <Footer />
-      </div>
+      <AppBlock>
+        <div className="App">
+          <Switch>
+            <Route path="/CategoryPage">
+              <CategoryPage />
+            </Route>
+            <Route path="/cart">
+              <CartPage />
+            </Route>
+            <Route path="/profile">
+              <UserProfilePage />
+            </Route>
+            <Route path="/">
+              <MainPage />
+            </Route>
+          </Switch>
+          <Footer />
+        </div>
+      </AppBlock>
     </ApolloProvider>
   );
 }
