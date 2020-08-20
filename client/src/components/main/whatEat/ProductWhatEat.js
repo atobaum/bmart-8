@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ProductInfo from '../common/ProductInfo';
+import Refresh from '../common/Refresh';
 
 const ProductWhatEatBlock = styled.div`
   .ProductTitle {
@@ -69,6 +70,7 @@ function ProductWhatEat() {
           );
         })}
       </div>
+      <Refresh title={'지금 뭐 먹지? '}></Refresh>
     </ProductWhatEatBlock>
   );
 }
