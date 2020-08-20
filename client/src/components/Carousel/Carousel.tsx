@@ -53,14 +53,20 @@ type CarouselProps = {
   transitionTime: number;
 };
 
+// TODO: refactor
 const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
   // to get width of the container
-  const containerRef = useRef(null);
-  const [curBanner, setCurBanner] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cssTransitionTime = Math.min(transitionTime / 3, 400);
+
+  const [curBannerIdx, setCurBannerIdx] = useState(1);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
   // 마우스로 화면을 눌렀을 때의 X좌표
-  const [startX, setStartX] = useState<any>(null);
+  // Remove transition animation if not null.
+  // Therefore also be used to disable animation in edge cases.
+  // 음수 startX는 edge case에서 순간이동하는 것을 의미합니다.
+  const [startX, setStartX] = useState<number | null>(-1);
 
   // offsetIdx번째 아이템에서 dx만큼 더 translate
   // Carousel을 이동시킬때 사용
@@ -72,63 +78,99 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
     )}px)`;
   };
 
-  useEffect(() => {
-    if (curBanner === 0) {
-      setTimeout(() => {
-        setStartX(1);
-        setCurBanner(images.length);
-        setTimeout(() => {
-          setStartX(null);
-        }, 0);
-        //TODO: remove magic number
-      }, 400);
-    } else if (curBanner === images.length + 1) {
-      setTimeout(() => {
-        setStartX(1);
-        setCurBanner(1);
-        setTimeout(() => {
-          setStartX(null);
-        }, 0);
-      }, 400);
-    }
-    translateBanner(curBanner);
+  const createTimer = (fn: Function, timeout: number) => {
+    const timerId = setTimeout(fn, timeout);
+    setTimeoutId(timerId);
+  };
 
+  const removeTimeer = () => {
     if (timeoutId !== null) {
       clearTimeout(timeoutId);
       setTimeoutId(null);
     }
+  };
 
-    const newTimeoutId = setTimeout(
-      () => setCurBanner(curBanner + 1),
-      transitionTime
+  const checkEdgeCase = (idx: number) => idx === 0 || idx === images.length + 1;
+  const moveBanner = (idx: number, instantMove: boolean = false) => {
+    if (checkEdgeCase(idx)) {
+      setTimeout(() => {
+        // To remove transition animation
+        setStartX(-1);
+        // 0 if idx === images.length; 1 if idx === images.length+1
+        const nextIdx = idx === 0 ? images.length : 1;
+        moveBanner(nextIdx, true);
+        (window as any).requestIdleCallback(() => {
+          setStartX(null);
+        });
+      }, cssTransitionTime);
+    }
+    translateBanner(idx);
+
+    removeTimeer();
+    setTimeout(
+      () => {
+        // To update indicator
+        setCurBannerIdx(idx);
+        if (idx > 0 && idx < images.length + 1) {
+          createTimer(() => moveBanner(idx + 1), transitionTime);
+        }
+      },
+      instantMove ? 0 : cssTransitionTime
     );
-    setTimeoutId(newTimeoutId);
+  };
+
+  useEffect(() => {
+    moveBanner(curBannerIdx);
+    (window as any).requestIdleCallback(() => {
+      setStartX(null);
+    });
     // eslint-disable-next-line
-  }, [curBanner]);
+  }, []);
+  useEffect(() => {
+    addEventListener();
+    return removeEventListenr;
+  });
 
   const dragStartHandler = (evt: any) => {
+    evt.preventDefault();
     setStartX(evt.clientX);
     clearTimeout(timeoutId!);
     setTimeoutId(null);
   };
   const dragMoveHandler = (evt: any) => {
-    if (startX) translateBanner(curBanner, startX - evt.clientX);
+    if (startX === null || startX < 0) return;
+    translateBanner(curBannerIdx, startX - evt.clientX);
   };
   const dragEndHandler = (evt: any) => {
-    setCurBanner(curBanner + (evt.clientX - startX > 0 ? -1 : 1));
+    if (startX === null || startX < 0) return;
+    const diff = evt.clientX - startX!;
+    const containerWidth = (containerRef.current as any).getBoundingClientRect()
+      .width;
+    if (Math.abs(diff) > containerWidth / 4)
+      moveBanner(curBannerIdx + (diff > 0 ? -1 : 1));
+    else moveBanner(curBannerIdx);
     setStartX(null);
+  };
+
+  const addEventListener = () => {
+    containerRef.current!.addEventListener('pointerdown', dragStartHandler);
+    document.addEventListener('pointermove', dragMoveHandler);
+    document.addEventListener('pointerup', dragEndHandler);
+  };
+
+  const removeEventListenr = () => {
+    containerRef.current!.removeEventListener('pointerdown', dragStartHandler);
+    document.removeEventListener('pointermove', dragMoveHandler);
+    document.removeEventListener('pointerup', dragEndHandler);
   };
 
   const lastBanner = images[images.length - 1];
 
   return (
-    <CarouselBlock isDragging={startX !== null} transitionTime={400}>
-      <div
-        className="wrapper"
-        ref={containerRef}
-        onPointerDown={dragStartHandler}
-        onPointerMove={dragMoveHandler}
-        onPointerUp={dragEndHandler}>
+    <CarouselBlock
+      isDragging={startX !== null}
+      transitionTime={cssTransitionTime}>
+      <div className="wrapper" ref={containerRef}>
         <div>
           <Link to={lastBanner.routeUrl}>
             <img src={lastBanner.imageUrl} alt={lastBanner.altString}></img>
@@ -151,8 +193,8 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
       </div>
       <CarouselSelector
         length={images.length}
-        onChange={(idx) => setCurBanner(idx)}
-        activeIdx={(curBanner - 1 + images.length) % images.length}
+        onChange={(idx) => moveBanner(idx)}
+        activeIdx={(curBannerIdx - 1 + images.length) % images.length}
       />
     </CarouselBlock>
   );

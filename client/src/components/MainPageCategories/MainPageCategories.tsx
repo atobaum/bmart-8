@@ -37,7 +37,7 @@ const MainPageCategories: React.FC = () => {
   return (
     <MainPageCategoriesBlock>
       {dummyIcons.map((item) => {
-        return <CategoryIconButton {...item} />;
+        return <CategoryIconButton key={item.name} {...item} />;
       })}
     </MainPageCategoriesBlock>
   );
