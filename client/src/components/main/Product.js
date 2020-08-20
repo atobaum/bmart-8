@@ -5,6 +5,7 @@ import ProductFlashDiscount from './discount/ProductFlashDiscount';
 import ProductWhatEat from './whatEat/ProductWhatEat';
 import ProductNew from './new/ProductNew';
 import ProductSellGood from './sellGood/ProductSellGood';
+import ProductEssential from './nowEssential/ProductEssential';
 
 const ProductBlock = styled.div``;
 
@@ -16,6 +17,7 @@ function Product() {
       <ProductWhatEat></ProductWhatEat>
       <ProductNew></ProductNew>
       <ProductSellGood></ProductSellGood>
+      <ProductEssential></ProductEssential>
     </ProductBlock>
   );
 }
