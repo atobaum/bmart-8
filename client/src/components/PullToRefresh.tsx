@@ -19,8 +19,14 @@ function getRandomMenus(
 
 const PullToRefreshBlock = styled.div`
   width: 100%;
-  border-top: 2px solid gray;
-  border-bottom: 2px solid gray;
+  border-bottom: 1px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: #77d6d3;
+  font-size: 1.5rem;
+  font-family: 'Gugi', cursive;
 `;
 
 type PullToRefreshProps = {
