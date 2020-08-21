@@ -7,8 +7,7 @@ const CarouselBlock = styled.div<{
   isDragging: boolean;
   transitionTime: number;
 }>`
-  width: 70%;
-  height: 300px;
+  width: 100%;
   overflow: hidden;
 
   .wrapper {
