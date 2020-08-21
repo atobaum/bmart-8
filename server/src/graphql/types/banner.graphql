@@ -5,5 +5,5 @@ type Banner {
   routeUrl: String
 }
 type Query {
-  mainBanners(type: String): [Banner]
+  mainBanners: [Banner]
 }
