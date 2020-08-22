@@ -74,6 +74,9 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({ onRefresh }: any) => {
         if (diffY > 0) {
           setSize(Math.min(diffY, maxSize));
           setVisible(true);
+        } else {
+          setSize(0);
+          setVisible(false);
         }
       }
     };
