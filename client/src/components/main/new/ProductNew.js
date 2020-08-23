@@ -20,6 +20,7 @@ const ProductNewBlock = styled.div`
     display: flex;
     flex-wrap: nowrap;
     width: 100%;
+    max-width:100vw;
     overflow-x: auto;
     ::-webkit-scrollbar {
       display: none;
