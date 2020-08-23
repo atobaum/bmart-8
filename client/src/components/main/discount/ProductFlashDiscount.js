@@ -94,7 +94,13 @@ function ProductFlashDiscount() {
           return (
             <>
               <div className="ProductTitle">
-                지금 사면 <span>⚡️ 번쩍할인</span>
+                지금 사면{' '}
+                <span>
+                  <span role="img" aria-label="lightning">
+                    ⚡
+                  </span>
+                  ️ 번쩍할인
+                </span>
               </div>
               <More></More>
               <div className="ProductPhoto">

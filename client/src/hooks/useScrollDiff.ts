@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function useScrollDiff(initScroll: number) {
-  const [startY, setStartY] = useState(initScroll);
+  const [startY] = useState(initScroll);
   const [diff, setDiff] = useState(0);
   useEffect(() => {
     const handler = (e: PointerEvent) => {

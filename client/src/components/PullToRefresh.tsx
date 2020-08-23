@@ -86,7 +86,7 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
     };
 
     return addEventListenerEvent(document, 'pointerup', endHandler);
-  }, [size]);
+  }, [onFinish, onRefresh, size, menu]);
   return size > 0 ? (
     <PullToRefreshBlock style={{ height: `${size}px` }}>
       {menu} 땡겨요
