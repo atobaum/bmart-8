@@ -65,12 +65,15 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
   const maxSize = 100;
   // margin px이상 땡겼을 때부터 땡겨요 시작
   const margin = 20;
-  const [menu, setMenu] = useState('');
+
+  // not null이면 메뉴판 돌리는 중.
+  const [menu, setMenu] = useState(null);
   const diff = useScrollDiff(startY);
-  const size = Math.max(0, Math.min(diff - margin, maxSize));
+  const size = menu ? maxSize : Math.max(0, Math.min(diff - margin, maxSize));
 
   useEffect(() => {
     const endHandler = () => {
+      if (menu) return;
       if (size === maxSize) {
         getRandomMenus(dummyMenu, 7, 200, setMenu);
         setTimeout(() => {
