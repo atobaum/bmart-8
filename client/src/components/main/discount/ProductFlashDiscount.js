@@ -4,7 +4,7 @@ import palette from '../../../lib/styles/palette';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 import getRandomInt from '../../../utils/random';
-
+import { Link } from 'react-router-dom';
 import More from '../common/More';
 import ProductPhoto from '../common/ProductPhoto';
 import ProductDiscount from './ProductDiscount';
@@ -103,7 +103,9 @@ function ProductFlashDiscount() {
                   ️ 번쩍할인
                 </span>
               </div>
-              <More></More>
+              <Link to="/main/flash_discount">
+                <More></More>
+              </Link>
               <div className="ProductPhoto">
                 {data.products.map((_data, idx) => {
                   return (

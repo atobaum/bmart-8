@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ProductInfo from '../common/ProductInfo';
 import More from '../common/More';
 import getRandomInt from '../../../utils/random';
+import { Link } from 'react-router-dom';
 
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
@@ -49,7 +50,9 @@ function ProductNew() {
   return (
     <ProductNewBlock>
       <div className="ProductTitle">새로나왔어요</div>
-      <More></More>
+      <Link to="/main/new_products">
+        <More></More>
+      </Link>
       <div className="ProductInfo">
         <Query query={GetNewProductQuery}>
           {({ data, loading, error }) => {

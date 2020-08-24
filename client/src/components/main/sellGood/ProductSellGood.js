@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ProductInfo from '../common/ProductInfo';
 import More from '../common/More';
+import { Link } from 'react-router-dom';
 
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
@@ -48,7 +49,9 @@ function ProductSellGood() {
   return (
     <ProductSellGoodBlock>
       <div className="ProductTitle">요즘 잘팔려요</div>
-      <More></More>
+      <Link to="/main/top_saling">
+        <More></More>
+      </Link>
       <div className="ProductInfo">
         <Query query={GetSellGoodProduct}>
           {({ data, loading, error }) => {
