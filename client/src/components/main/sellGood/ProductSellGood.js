@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ProductInfo from '../common/ProductInfo';
 import More from '../common/More';
+import { Link } from 'react-router-dom';
 
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
@@ -33,10 +34,9 @@ const ProductSellGoodBlock = styled.div`
     }
   }
 `;
+const random = getRandomInt(0, 7000);
 
 function ProductSellGood() {
-  const random = getRandomInt(0, 7000);
-
   const GetSellGoodProduct = gql`
     query{
       products(take:8, skip:${random})  {
@@ -49,7 +49,9 @@ function ProductSellGood() {
   return (
     <ProductSellGoodBlock>
       <div className="ProductTitle">요즘 잘팔려요</div>
-      <More></More>
+      <Link to="/main/top_saling">
+        <More></More>
+      </Link>
       <div className="ProductInfo">
         <Query query={GetSellGoodProduct}>
           {({ data, loading, error }) => {
