@@ -27,6 +27,10 @@ const reducer = (state: CartItem[], action: any) => {
           ? { ...item, count: payload.count }
           : item;
       });
+    case 'DELETE_ONE':
+      return state.filter((item) => item.id !== payload.id);
+    case 'DELETE_MANY':
+      return state.filter((item) => !payload.ids.includes(item.id));
     default:
       return state;
   }

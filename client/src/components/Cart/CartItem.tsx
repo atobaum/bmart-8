@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PriceLabel from '../PriceLabel';
 import CartItemCounter from './CartItemCounter';
-import { useCartState, useCartDispatch } from '../../stores/cart-store';
+import { useCartDispatch } from '../../stores/cart-store';
 
 const CartItemBlock = styled.div`
   display: grid;
@@ -48,6 +48,7 @@ type CartItemProps = {
   };
   createdAt: Date;
   count: number;
+  onChangeSelect: (checked: boolean) => void;
 };
 
 const CartItem: React.FC<CartItemProps> = ({
@@ -55,14 +56,30 @@ const CartItem: React.FC<CartItemProps> = ({
   product,
   count,
   createdAt,
+  onChangeSelect,
 }) => {
   const dispatch = useCartDispatch();
   return (
     <CartItemBlock>
       <div className="cartitem-header">
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          onChange={(e) => {
+            onChangeSelect(e.target.checked);
+          }}
+        />
         <div>{product.name}</div>
-        <button>삭제</button>
+        <button
+          onClick={() => {
+            dispatch({
+              type: 'DELETE_ONE',
+              payload: {
+                id,
+              },
+            });
+          }}>
+          삭제
+        </button>
       </div>
       <div className="cartitem-img">
         <img src={product.img_url} alt={product.name} />

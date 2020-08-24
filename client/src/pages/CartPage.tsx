@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import { useCartState } from '../stores/cart-store';
@@ -8,6 +8,7 @@ import CartItem from '../components/Cart/CartItem';
 const CartPageBlock = styled.div``;
 
 const CartPage: React.FC = () => {
+  const [selected, setSelected] = useState<number[]>([]);
   const cart = useCartState();
 
   return (
@@ -17,7 +18,14 @@ const CartPage: React.FC = () => {
       </Helmet>
       <CartHeader />
       {cart.map((item) => (
-        <CartItem key={item.id} {...item} />
+        <CartItem
+          key={item.id}
+          {...item}
+          onChangeSelect={(checked) => {
+            if (checked) setSelected([...selected, item.id]);
+            else setSelected(selected.filter((id) => !selected.includes(id)));
+          }}
+        />
       ))}
     </CartPageBlock>
   );
