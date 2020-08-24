@@ -27,7 +27,7 @@ export default {
     thirdCategory: (parent: any, { id }: { id: string }) =>
       prisma.category_third.findOne({
         where: { id: parseInt(id) },
-        include: { parent: true },
+        include: { parent: true, product: true },
       }),
     categories: async () => {
       const categories = await prisma.category_third.findMany({
