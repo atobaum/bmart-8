@@ -49,6 +49,7 @@ type CartItemProps = {
   createdAt: Date;
   count: number;
   onChangeSelect: (checked: boolean) => void;
+  selected: boolean;
 };
 
 const CartItem: React.FC<CartItemProps> = ({
@@ -57,6 +58,7 @@ const CartItem: React.FC<CartItemProps> = ({
   count,
   createdAt,
   onChangeSelect,
+  selected,
 }) => {
   const dispatch = useCartDispatch();
   return (
@@ -67,6 +69,7 @@ const CartItem: React.FC<CartItemProps> = ({
           onChange={(e) => {
             onChangeSelect(e.target.checked);
           }}
+          checked={selected}
         />
         <div>{product.name}</div>
         <button

@@ -7,14 +7,32 @@ const CartHeaderBlock = styled.div`
   display: flex;
 `;
 
-type CartHeaderProps = {};
-const CartHeader: React.FC<CartHeaderProps> = () => {
+type CartHeaderProps = {
+  onChangeChecked: (checked: boolean) => void;
+  onDelete: () => void;
+};
+const CartHeader: React.FC<CartHeaderProps> = ({
+  onChangeChecked,
+  onDelete,
+}) => {
   const history = useHistory();
   return (
-    <CartHeaderBlock>
-      <GoBackButton />
-      <div>장바구니</div>
-    </CartHeaderBlock>
+    <>
+      <CartHeaderBlock>
+        <GoBackButton />
+        <div>장바구니</div>
+      </CartHeaderBlock>
+      <CartHeaderBlock>
+        <label>
+          <input
+            type="checkbox"
+            onChange={(e) => onChangeChecked(e.target.checked)}
+          />
+          전체선택
+        </label>
+        <button onClick={onDelete}>선택 삭제</button>
+      </CartHeaderBlock>
+    </>
   );
 };
 export default CartHeader;
