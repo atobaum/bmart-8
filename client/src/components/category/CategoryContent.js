@@ -107,12 +107,12 @@ function CategoryContent(props) {
             {({ data, loading, error }) => {
               let childList = [];
               if (loading || error) return '';
-              data.secondCategory.children.forEach((data) => {
-                childList.push(
-                  <div>
-                    <Link className="Link" to={data.id}>{data.name}</Link>
-                  </div>
-                );
+              const childList = data.secondCategory.children.map((data) => {
+                <div>
+                  <Link className="Link" to={data.id}>
+                    {data.name}
+                  </Link>
+                </div>;
               });
               return childList;
             }}
