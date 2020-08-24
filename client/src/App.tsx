@@ -15,10 +15,6 @@ import CategoryPage from './pages/CategoryPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 
-const client = new ApolloClient({
-  uri: '/graphql',
-});
-
 const AppBlock = styled.div`
   max-width: 100%;
   overflow-x: hidden;
@@ -26,31 +22,29 @@ const AppBlock = styled.div`
 
 function App() {
   return (
-    <ApolloProvider client={client}>
-      <AppBlock>
-        <div className="App">
-          <Switch>
-            <Route path="/categories">
-              <CategoryPage />
-            </Route>
-            <Route path="/cart">
-              <CartPage />
-            </Route>
-            <Route path="/profile">
-              <UserProfilePage />
-            </Route>
-            <Route path="/search/:query" component={SearchResultPage} />
-            <Route path="/search">
-              <SearchPage />
-            </Route>
-            <Route path="/">
-              <MainPage />
-            </Route>
-          </Switch>
-          <Footer />
-        </div>
-      </AppBlock>
-    </ApolloProvider>
+    <AppBlock>
+      <div className="App">
+        <Switch>
+          <Route path="/categories">
+            <CategoryPage />
+          </Route>
+          <Route path="/cart">
+            <CartPage />
+          </Route>
+          <Route path="/profile">
+            <UserProfilePage />
+          </Route>
+          <Route path="/search/:query" component={SearchResultPage} />
+          <Route path="/search">
+            <SearchPage />
+          </Route>
+          <Route path="/">
+            <MainPage />
+          </Route>
+        </Switch>
+        <Footer />
+      </div>
+    </AppBlock>
   );
 }
 
