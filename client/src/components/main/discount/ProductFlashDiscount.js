@@ -90,7 +90,8 @@ function ProductFlashDiscount() {
     <ProductFlashDiscountBlock>
       <Query query={GetFlashProductQuery}>
         {({ data, loading, error }) => {
-          if (loading || error) return '';
+          if (loading || error) return null;
+          if (data.products.length === 0) return null;
           return (
             <>
               <div className="ProductTitle">
