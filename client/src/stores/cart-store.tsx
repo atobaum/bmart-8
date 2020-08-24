@@ -14,12 +14,19 @@ type CartItem = {
   count: number;
 };
 
-const initState: any[] = [];
+const initState: CartItem[] = [];
 
-const reducer = (state: any, action: any) => {
+const reducer = (state: CartItem[], action: any) => {
+  const payload = action.payload;
   switch (action.type) {
     case 'INIT':
       return action.payload;
+    case 'SET_COUNT':
+      return state.map((item) => {
+        return item.id === payload.id
+          ? { ...item, count: payload.count }
+          : item;
+      });
     default:
       return state;
   }

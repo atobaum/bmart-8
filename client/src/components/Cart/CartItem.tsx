@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import PriceLabel from '../PriceLabel';
+import CartItemCounter from './CartItemCounter';
+import { useCartState, useCartDispatch } from '../../stores/cart-store';
 
 const CartItemBlock = styled.div`
   display: grid;
@@ -16,6 +18,7 @@ const CartItemBlock = styled.div`
 
   .cartitem-header {
     grid-area: header;
+    display: flex;
   }
   .cartitem-img {
     grid-area: img;
@@ -53,10 +56,13 @@ const CartItem: React.FC<CartItemProps> = ({
   count,
   createdAt,
 }) => {
+  const dispatch = useCartDispatch();
   return (
     <CartItemBlock>
       <div className="cartitem-header">
+        <input type="checkbox" />
         <div>{product.name}</div>
+        <button>삭제</button>
       </div>
       <div className="cartitem-img">
         <img src={product.img_url} alt={product.name} />
@@ -68,7 +74,18 @@ const CartItem: React.FC<CartItemProps> = ({
         />
       </div>
       <div className="cartitem-count">
-        <div>{count}</div>
+        <CartItemCounter
+          count={count}
+          onChange={(count) => {
+            dispatch({
+              type: 'SET_COUNT',
+              payload: {
+                id,
+                count,
+              },
+            });
+          }}
+        />
       </div>
     </CartItemBlock>
   );
