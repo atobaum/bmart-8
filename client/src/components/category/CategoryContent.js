@@ -105,15 +105,14 @@ function CategoryContent(props) {
         <div className="third">
           <Query query={getThirdQuery(selected)}>
             {({ data, loading, error }) => {
-              let childList = [];
               if (loading || error) return '';
-              const childList = data.secondCategory.children.map((data) => {
+              let childList = data.secondCategory.children.map((data) => (
                 <div>
                   <Link className="Link" to={data.id}>
                     {data.name}
                   </Link>
-                </div>;
-              });
+                </div>
+              ));
               return childList;
             }}
           </Query>
