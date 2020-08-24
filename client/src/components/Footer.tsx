@@ -6,6 +6,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import { useCartState } from '../stores/cart-store';
 
 const FooterBlock = styled.div`
   position: fixed;
@@ -39,6 +40,7 @@ const LinkBlock = styled(Link)`
 type FooterProps = {};
 
 const Footer: React.FC<FooterProps> = () => {
+  const cart = useCartState();
   return (
     <FooterBlock>
       <ol>
@@ -69,7 +71,7 @@ const Footer: React.FC<FooterProps> = () => {
         <li>
           <LinkBlock to="/cart">
             <AddShoppingCartIcon></AddShoppingCartIcon>
-            <div>장바구니</div>
+            <div>장바구니 {cart.length} 개</div>
           </LinkBlock>
         </li>
       </ol>
