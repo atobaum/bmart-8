@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import ProductInfo from '../common/ProductInfo';
 import Refresh from '../common/Refresh';
+import { gql } from 'apollo-boost';
+import { Query } from 'react-apollo';
+import getRandomInt from '../../../utils/random';
 
 const ProductWhatEatBlock = styled.div`
   .ProductTitle {
@@ -20,63 +23,46 @@ const ProductWhatEatBlock = styled.div`
     height: auto;
     width: auto;
     margin-bottom: 0.1rem;
-    & > div{
-      width:32%;
+    & > div {
+      width: 32%;
     }
-
+  }
+  .Refresh {
+    background-color: white;
+    margin-bottom: 0.3rem;
+    padding-bottom: 0.3rem;
   }
 `;
+const random = getRandomInt(450, 500);
 
 function ProductWhatEat() {
-  let data = [
-    {
-      title: '음식명',
-      price: 123123,
-      url: 'https://i.imgur.com/FODPMXD.jpg',
-    },
-    {
-      title: '음식명',
-      price: 123123,
-      url: 'https://i.imgur.com/zU9sTZJ.jpg',
-    },
-    {
-      title: '음식명',
-      price: 123123,
-      url:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQOEptWBRiRPfneQe3e2vnf6VPbYnqoHUu4nA&usqp=CAU',
-    },
-    {
-      title: '음식명',
-      price: 123123,
-      url:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQOEptWBRiRPfneQe3e2vnf6VPbYnqoHUu4nA&usqp=CAU',
-    },
-    {
-      title: '음식명',
-      price: 123123,
-      url:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQOEptWBRiRPfneQe3e2vnf6VPbYnqoHUu4nA&usqp=CAU',
-    },
-    {
-      title: '음식명',
-      price: 123123,
-      url:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQOEptWBRiRPfneQe3e2vnf6VPbYnqoHUu4nA&usqp=CAU',
-    },
-  ];
+  const GetWhatEatProduct = gql`
+    query {
+      products(take:9, skip:${random}) {
+        name
+        price
+        img_url
+      }
+    }
+  `;
   return (
     <ProductWhatEatBlock>
       <div className="ProductTitle">지금 뭐 먹지?</div>
       <div className="ProductInfo">
-        {data.map((_data, idx) => {
-          return (
-            <ProductInfo
-              key={idx}
-              title={_data.title}
-              price={_data.price}
-              url={_data.url}></ProductInfo>
-          );
-        })}
+        <Query query={GetWhatEatProduct}>
+          {({ data, loading, error }) => {
+            if (loading || error) return '';
+            return data.products.map((product, idx) => {
+              return (
+                <ProductInfo
+                  key={idx}
+                  title={product.name}
+                  price={product.price}
+                  url={product.img_url}></ProductInfo>
+              );
+            });
+          }}
+        </Query>
       </div>
       <div className="Refresh">
         <Refresh className="Refresh" title={'지금 뭐 먹지? '}></Refresh>

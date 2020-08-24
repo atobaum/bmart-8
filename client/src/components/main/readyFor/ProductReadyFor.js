@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import ProductInfo from '../common/ProductInfo';
+import { gql } from 'apollo-boost';
+import { Query } from 'react-apollo';
+import getRandomInt from '../../../utils/random';
 
 const ProductReadyForBlock = styled.div`
+  margin-top: 0.3rem;
   .ProductTitle {
     padding: 1rem;
     background-color: white;
@@ -10,6 +14,7 @@ const ProductReadyForBlock = styled.div`
     font-weight: bold;
   }
   .ProductInfo {
+    max-width: 100vw;
     margin-bottom: 0.3rem;
     display: flex;
     flex-wrap: nowrap;
@@ -28,44 +33,38 @@ const ProductReadyForBlock = styled.div`
   }
 `;
 
+const random = getRandomInt(0, 7000);
+
 function ProductReadyFor() {
-  let data = [
-    {
-      title: '음식명',
-      price: 123123,
-      url:
-        'https://dimg.donga.com/a/500/0/90/5/ugc/CDB/29STREET/Article/5e/b2/04/e8/5eb204e81752d2738236.jpg',
-    },
-    {
-      title: '음식명',
-      price: 123123,
-      url: 'https://i.imgur.com/FODPMXD.jpg',
-    },
-    {
-      title: '음식명',
-      price: 123123,
-      url: 'https://i.imgur.com/zU9sTZJ.jpg',
-    },
-    {
-      title: '음식명',
-      price: 123123,
-      url:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQOEptWBRiRPfneQe3e2vnf6VPbYnqoHUu4nA&usqp=CAU',
-    },
-  ];
+  const GetReadyProductQuery = gql`
+    query {
+      products(take:9,skip:${random}) {
+        name
+        price
+        img_url
+      }
+    }
+  `;
+
   return (
     <ProductReadyForBlock>
-      <div className="ProductTitle">ㅇㅇㅇ님을 위해 준비한 상품</div>
+      <div className="ProductTitle">기진님을 위해 준비한 상품</div>
       <div className="ProductInfo">
-        {data.map((_data, idx) => {
-          return (
-            <ProductInfo
-              key={idx}
-              title={_data.title}
-              price={_data.price}
-              url={_data.url}></ProductInfo>
-          );
-        })}
+        <Query query={GetReadyProductQuery}>
+          {({ data, loading, error }) => {
+            if (loading || error) return '';
+
+            return data.products.map((product, idx) => {
+              return (
+                <ProductInfo
+                  key={idx}
+                  title={product.name}
+                  price={product.price}
+                  url={product.img_url}></ProductInfo>
+              );
+            });
+          }}
+        </Query>
       </div>
     </ProductReadyForBlock>
   );

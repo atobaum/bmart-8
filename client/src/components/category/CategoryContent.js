@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 import palette from '../../lib/styles/palette';
+import { Link } from 'react-router-dom';
 
 const CategoryContentBlock = styled.div`
   .second,
@@ -35,13 +36,22 @@ const CategoryContentBlock = styled.div`
     border-top: solid 0.01rem ${palette.gray200};
     border-right: solid 0.01rem ${palette.gray200};
   }
+
+  .Link {
+    text-decoration: none;
+    color: black;
+    &:focus,
+    &:visited,
+    &:link,
+    &:active {
+      text-decoration: none;
+    }
+  }
 `;
 
 function CategoryContent(props) {
   const [selected, setSelected] = useState(false);
   const [showThird, setShowThird] = useState(false);
-
- 
 
   function toggleThirdCategory(index) {
     props.closeContent();
@@ -95,12 +105,14 @@ function CategoryContent(props) {
         <div className="third">
           <Query query={getThirdQuery(selected)}>
             {({ data, loading, error }) => {
-              let childList = [];
-              if (loading) return '';
-              if (error) return '';
-              data.secondCategory.children.forEach((data) => {
-                childList.push(<div>{data.name}</div>);
-              });
+              if (loading || error) return '';
+              let childList = data.secondCategory.children.map((data) => (
+                <div>
+                  <Link className="Link" to={data.id}>
+                    {data.name}
+                  </Link>
+                </div>
+              ));
               return childList;
             }}
           </Query>
