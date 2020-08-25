@@ -93,7 +93,8 @@ const reducer = (state: CartItem[], action: CartStoreAction) => {
     case INIT:
       return action.payload;
     case ADD_ITEM:
-      return [...state, action.payload];
+      if (state.some((item) => item.id === action.payload.id)) return state;
+      else return [...state, action.payload];
     case SET_COUNT:
       return state.map((item) => {
         return item.id === action.payload.id
