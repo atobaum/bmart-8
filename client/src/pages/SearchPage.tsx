@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useQuery, useMutation, useLazyQuery } from 'react-apollo';
+import { useMutation, useLazyQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import SearchInput from '../components/Search/SearchInput';
 import SearchRecommendationList from '../components/Search/SearchRecommendationList';
@@ -12,20 +12,22 @@ const REMOVE_SEARH_HISTORY = gql`
   }
 `;
 
+const GET_SEARCH_HISTORY = gql`
+  query getSearchHistory {
+    searchHistory {
+      id
+      date
+      query
+    }
+  }
+`;
+
 const SearchPageBlock = styled.div``;
 
 const SearchPage: React.FC = () => {
   const [instantSearchData, setInstantSearchData] = useState<string[]>([]);
   const [querySearchHistory, searchHistoryResult] = useLazyQuery(
-    gql`
-      query getSearchHistory {
-        searchHistory {
-          id
-          date
-          query
-        }
-      }
-    `,
+    GET_SEARCH_HISTORY,
     {
       fetchPolicy: 'network-only',
     }
