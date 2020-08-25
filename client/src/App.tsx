@@ -50,7 +50,7 @@ function App() {
 
   useEffect(() => {
     if (cartData) cartDispatch({ type: 'INIT', payload: cartData.cart });
-  }, [cartData]);
+  }, [cartData, cartDispatch]);
 
   return (
     <AppBlock>

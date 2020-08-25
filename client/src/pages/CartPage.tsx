@@ -26,7 +26,7 @@ const CartPage: React.FC = () => {
 
   useEffect(() => {
     if (removeCartItemData) dispatch(deleteCartItems(selected));
-  }, [removeCartItemData]);
+  }, [removeCartItemData, dispatch, selected]);
 
   return (
     <CartPageBlock>

@@ -38,7 +38,7 @@ function ProductInfo({ title, price, url, id }) {
   useEffect(() => {
     if (!data) return;
     cartDispatch(addCartItem(data.addToCart));
-  }, [data]);
+  }, [data, cartDispatch]);
 
   return (
     <ProductInfoBlock>

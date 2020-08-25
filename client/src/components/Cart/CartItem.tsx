@@ -90,12 +90,12 @@ const CartItem: React.FC<CartItemProps> = ({
   `);
   useEffect(() => {
     if (removeCartItemData) dispatch(deleteCartItem(id));
-  }, [removeCartItemData]);
+  }, [removeCartItemData, id, dispatch]);
 
   useEffect(() => {
     if (setCartCountData)
       dispatch(setCartItemCount(id, setCartCountData.addToCart.count));
-  }, [setCartCountData]);
+  }, [setCartCountData, id, dispatch]);
 
   return (
     <CartItemBlock>
