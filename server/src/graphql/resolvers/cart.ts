@@ -94,9 +94,9 @@ export default {
         count: resultCartItem.count,
       };
     },
-    removeCartItem: async (
+    removeCartItems: async (
       parent: any,
-      args: any,
+      {}: any,
       { prisma }: PrismaContext
     ): Promise<boolean> => {
       return true;
