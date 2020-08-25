@@ -1,6 +1,13 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { UserInputError, AuthenticationError } from 'apollo-server';
+import { PrismaClient, PrismaClientOptions } from '@prisma/client';
 
+type PrismaContext = {
+  user?: {
+    id: number;
+    email: string;
+  };
+  prisma: PrismaClient<PrismaClientOptions, never>;
+};
 type CartItem = {
   id: number;
   product: any;
@@ -23,18 +30,56 @@ export default {
     },
   },
   Mutation: {
-    changeCartItemCount: async (
+    addToCart: async (
       _: any,
-      { cartId, count }: any
-    ): Promise<boolean> => {
-      return true;
-    },
-    addToCart: async (_: any, { productId, count }: any): Promise<CartItem> => {
+      { productId, count = 1 }: { productId: number; count: number },
+      { user, prisma }: PrismaContext
+    ): Promise<CartItem> => {
+      if (!user) throw new AuthenticationError('Login first.');
+      const product = await prisma.product.findOne({
+        where: {
+          id: productId,
+        },
+      });
+      if (!product) {
+        throw new UserInputError('Invalid product id: ' + productId);
+      }
+
+      const oldOrderItems = await prisma.cart.findMany({
+        where: {
+          product_id: productId,
+          user_id: user.id,
+        },
+      });
+
+      let resultCartItem = null;
+      if (oldOrderItems.length) {
+        const oldOrderItem = oldOrderItems[0];
+        if (oldOrderItem.count !== count) {
+          resultCartItem = await prisma.cart.update({
+            where: { id: oldOrderItem.id },
+            data: { count: count },
+          });
+        } else resultCartItem = oldOrderItem;
+      } else {
+        resultCartItem = await prisma.cart.create({
+          data: {
+            product: {
+              connect: { id: productId },
+            },
+            user: {
+              connect: { id: user.id },
+            },
+            count,
+          },
+        });
+      }
+
       return {
-        id: 1,
-        product: 1,
-        createdAt: new Date(),
-        count: 1,
+        id: resultCartItem.id,
+        product: product,
+        createdAt: resultCartItem.created_at,
+        count: resultCartItem.count,
       };
     },
     removeCartItem: async (_: any, { cartId }: any): Promise<boolean> => {
