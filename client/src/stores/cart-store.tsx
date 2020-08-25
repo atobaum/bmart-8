@@ -1,6 +1,7 @@
 import React, { useReducer, useContext } from 'react';
 
 const INIT = 'INIT' as const;
+const ADD_ITEM = 'ADD_ITEM' as const;
 const SET_COUNT = 'SET_COUNT' as const;
 const DELETE_ONE = 'DELETE_ONE' as const;
 const DELETE_MANY = 'DELETE_MANY' as const;
@@ -8,6 +9,10 @@ const DELETE_MANY = 'DELETE_MANY' as const;
 type InitAction = {
   type: typeof INIT;
   payload: CartItem[];
+};
+type AddItemAction = {
+  type: typeof ADD_ITEM;
+  payload: CartItem;
 };
 type SetCountAction = {
   type: typeof SET_COUNT;
@@ -27,6 +32,7 @@ type DeleteManyAction = {
 
 type CartStoreAction =
   | InitAction
+  | AddItemAction
   | SetCountAction
   | DeleteOneAction
   | DeleteManyAction;
@@ -45,12 +51,21 @@ type CartItem = {
   count: number;
 };
 
+export function addCartItem(cartItem: CartItem) {
+  return {
+    type: ADD_ITEM,
+    payload: cartItem,
+  };
+}
+
 const initState: CartItem[] = [];
 
 const reducer = (state: CartItem[], action: CartStoreAction) => {
   switch (action.type) {
     case INIT:
       return action.payload;
+    case ADD_ITEM:
+      return [...state, action.payload];
     case SET_COUNT:
       return state.map((item) => {
         return item.id === action.payload.id
