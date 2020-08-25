@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
 import GoBackButton from '../GoBackButton';
 
 const CartHeaderBlock = styled.div`
@@ -15,7 +14,6 @@ const CartHeader: React.FC<CartHeaderProps> = ({
   onChangeChecked,
   onDelete,
 }) => {
-  const history = useHistory();
   return (
     <>
       <CartHeaderBlock>
