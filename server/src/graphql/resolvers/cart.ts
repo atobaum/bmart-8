@@ -20,16 +20,22 @@ export default {
     cart: async (
       parent: any,
       args: any,
-      { prisma }: PrismaContext
+      { user, prisma }: PrismaContext
     ): Promise<CartItem[]> => {
-      const data: any = await prisma.product.findMany({
-        take: 5,
+      if (!user) throw new AuthenticationError('Login first.');
+      const data = await prisma.cart.findMany({
+        where: {
+          user_id: user.id,
+        },
+        include: {
+          product: true,
+        },
       });
-      return data.map((row: any, i: number) => ({
-        id: i,
-        product: row,
-        createdAt: new Date(),
-        count: i + 2,
+      return data.map((row) => ({
+        id: row.id,
+        product: row.product,
+        createdAt: row.created_at,
+        count: row.count,
       }));
     },
   },
