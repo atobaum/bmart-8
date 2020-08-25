@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import CategoryPage from './pages/CategoryPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
+import CategoryDetailPage from './pages/CategoryDetailPage';
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -43,6 +44,7 @@ function App() {
             <Route path="/search">
               <SearchPage />
             </Route>
+            <Route path="/category/:query" component={CategoryDetailPage} />
             <Route path="/">
               <MainPage />
             </Route>
