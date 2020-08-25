@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import CategoryProduct from '../components/CategoryDetail/CategoryProduct';
 import palette from '../lib/styles/palette';
-import Search from '../components/Search';
+
+import CategoryProduct from '../components/CategoryDetail/CategoryProduct';
+import CategoryHeader from '../components/CategoryDetail/CategoryHeader';
 
 const CategoryDetailBlock = styled.div`
   height: 100vh;
@@ -14,7 +15,7 @@ const CategoryDetailPage: React.FC<any> = ({ match }: any) => {
 
   return (
     <CategoryDetailBlock>
-      <Search></Search>
+      <CategoryHeader id={q}></CategoryHeader>
       <CategoryProduct id={q}></CategoryProduct>
     </CategoryDetailBlock>
   );

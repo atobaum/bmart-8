@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const FilterBlock = styled.div`
+  background-color: white;
   position: relative;
   float: right;
   right: 1rem;
@@ -9,11 +10,10 @@ const FilterBlock = styled.div`
   padding-bottom: 0.5rem;
 `;
 
-
-function Filter({onChange}){
+function Filter({ onChange }) {
   return (
     <FilterBlock>
-      <select onChange={onChange}  >
+      <select onChange={onChange}>
         <option value="basic">기본 정렬순</option>
         <option value="new">최근 등록순</option>
         <option value="expensive">금액 높은순</option>
@@ -22,5 +22,5 @@ function Filter({onChange}){
       </select>
     </FilterBlock>
   );
-};
+}
 export default Filter;
