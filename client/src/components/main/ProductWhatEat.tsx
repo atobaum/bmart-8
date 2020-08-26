@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProductInfo from '../common/ProductInfo';
-import Refresh from '../common/Refresh';
-import { Query } from 'react-apollo';
-import getRandomInt from '../../../utils/random';
-import { GET_PRODUCT_SIMPLE } from '../main-query';
+import ProductInfo from './common/ProductInfo';
+import Refresh from './common/Refresh';
+import useRandomProducts from './hooks/useRandomProducts';
 
 const ProductWhatEatBlock = styled.div`
   .ProductTitle {
@@ -33,28 +31,27 @@ const ProductWhatEatBlock = styled.div`
     padding-bottom: 0.3rem;
   }
 `;
-const cursor = getRandomInt(450, 500);
+
+// 국,반찬,메인요리
+// const cursor = getRandomInt(450, 500);
 
 function ProductWhatEat() {
+  const products = useRandomProducts(9);
   return (
     <ProductWhatEatBlock>
       <div className="ProductTitle">지금 뭐 먹지?</div>
       <div className="ProductInfo">
-      <Query query={GET_PRODUCT_SIMPLE} variables={{ take: 9, cursor:cursor}}>
-          {({ data, loading, error }) => {
-            if (loading || error) return '';
-            return data.products.products.map((product, idx) => {
-              return (
-                <ProductInfo
-                  id={product.id}
-                  key={idx}
-                  title={product.name}
-                  price={product.price}
-                  url={product.img_url}></ProductInfo>
-              );
-            });
-          }}
-        </Query>
+        {products &&
+          products.map((product) => {
+            return (
+              <ProductInfo
+                key={product.id}
+                id={product.id}
+                title={product.name}
+                price={product.price}
+                url={product.img_url}></ProductInfo>
+            );
+          })}
       </div>
       <div className="Refresh">
         <Refresh className="Refresh" title={'지금 뭐 먹지? '}></Refresh>

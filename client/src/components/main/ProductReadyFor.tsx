@@ -1,11 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProductInfo from '../common/ProductInfo';
-import { Query } from 'react-apollo';
-import getRandomInt from '../../../utils/random';
-import useUser from '../../../hooks/useUser';
-import { GET_PRODUCT_SIMPLE } from '../main-query';
-import { gql } from 'apollo-boost';
+import useUser from '../../hooks/useUser';
+import ProductInfo from './common/ProductInfo';
+import useRandomProducts from './hooks/useRandomProducts';
 
 const ProductReadyForBlock = styled.div`
   margin-top: 0.3rem;
@@ -35,32 +32,27 @@ const ProductReadyForBlock = styled.div`
   }
 `;
 
-const cursor = getRandomInt(0, 7000);
-
 function ProductReadyFor() {
+  const products = useRandomProducts(9);
   const user = useUser();
+
   return (
     <ProductReadyForBlock>
       <div className="ProductTitle">
         {`${user ? user.name + '님' : '당신'}을 위해 준비한 상품`}
       </div>
       <div className="ProductInfo">
-      <Query query={GET_PRODUCT_SIMPLE} variables={{ take: 9, cursor:cursor}}>
-          {({ data, loading, error }) => {
-            if (loading || error) return '';
-
-            return data.products.products.map((product, idx) => {
-              return (
-                <ProductInfo
-                  key={idx}
-                  id={product.id}
-                  title={product.name}
-                  price={product.price}
-                  url={product.img_url}></ProductInfo>
-              );
-            });
-          }}
-        </Query>
+        {products &&
+          products.map((product) => {
+            return (
+              <ProductInfo
+                key={product.id}
+                id={product.id}
+                title={product.name}
+                price={product.price}
+                url={product.img_url}></ProductInfo>
+            );
+          })}
       </div>
     </ProductReadyForBlock>
   );

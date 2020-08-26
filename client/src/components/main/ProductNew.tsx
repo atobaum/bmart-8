@@ -1,12 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProductInfo from '../common/ProductInfo';
-import More from '../common/More';
-import getRandomInt from '../../../utils/random';
+import ProductInfo from './common/ProductInfo';
+import More from './common/More';
 import { Link } from 'react-router-dom';
-
-import { Query } from 'react-apollo';
-import { GET_PRODUCT_SIMPLE } from '../main-query';
+import useRandomProducts from './hooks/useRandomProducts';
 
 const ProductNewBlock = styled.div`
   .ProductTitle {
@@ -35,9 +32,9 @@ const ProductNewBlock = styled.div`
   }
 `;
 
-const cursor = getRandomInt(0, 7000);
-
 function ProductNew() {
+  const products = useRandomProducts(8);
+
   return (
     <ProductNewBlock>
       <div className="ProductTitle">새로나왔어요</div>
@@ -45,21 +42,17 @@ function ProductNew() {
         <More></More>
       </Link>
       <div className="ProductInfo">
-        <Query query={GET_PRODUCT_SIMPLE} variables={{ take: 8, cursor:cursor}}>
-          {({ data, loading, error }) => {
-            if (loading || error) return '';
-            return data.products.products.map((product, idx) => {
-              return (
-                <ProductInfo
-                  key={idx}
-                  id={product.id}
-                  title={product.name}
-                  price={product.price}
-                  url={product.img_url}></ProductInfo>
-              );
-            });
-          }}
-        </Query>
+        {products &&
+          products.map((product) => {
+            return (
+              <ProductInfo
+                key={product.id}
+                id={product.id}
+                title={product.name}
+                price={product.price}
+                url={product.img_url}></ProductInfo>
+            );
+          })}
       </div>
     </ProductNewBlock>
   );

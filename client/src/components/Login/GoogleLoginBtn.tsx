@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flex, FlexCenter } from '../../lib/styles/mixins';
+import { Flex } from '../../lib/styles/mixins';
 
 const GoogleLoginBtnBlock = styled.div`
   ${Flex('row')}
