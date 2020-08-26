@@ -8,6 +8,8 @@ import { useQuery } from 'react-apollo';
 
 import CartPage from './pages/CartPage';
 import MainPage from './pages/MainPage';
+import LoginPage from './pages/LoginPage';
+import LoginCallbackPage from './pages/LoginCallbackPage';
 import UserProfilePage from './pages/UserProfilePage';
 import Footer from './components/Footer';
 
@@ -68,9 +70,15 @@ function App() {
             <Route path="/profile">
               <UserProfilePage />
             </Route>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
             <Route path="/search/:query" component={SearchResultPage} />
             <Route path="/search">
               <SearchPage />
+            </Route>
+            <Route path="/loginCallback">
+              <LoginCallbackPage />
             </Route>
             <Route path="/category/:query" component={CategoryDetailPage} />
             <Route path="/">
