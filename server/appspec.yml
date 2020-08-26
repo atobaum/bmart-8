@@ -10,6 +10,6 @@ permission:
     group: ubuntu
 hooks:
   BeforeInstall:
-    - location: server/scripts/before_server_deploy.sh
+    - location: scripts/before_server_deploy.sh
   AfterInstall:
-    - location: server/scripts/after_server_deploy.sh
+    - location: scripts/after_server_deploy.sh
