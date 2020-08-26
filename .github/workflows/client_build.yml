@@ -26,8 +26,6 @@ jobs:
           cd client
           yarn
           yarn build
-          mv build ../build
-          cd ..
           tar -cvzf build.tgz appspec.yml build scripts
         env:
           CI: false
@@ -39,7 +37,7 @@ jobs:
         run: |
           aws s3 cp \
             --region ap-northeast-2 \
-            build.tgz s3://bmart-8/client_build/build-`git rev-parse --short HEAD`.tgz
+            client/build.tgz s3://bmart-8/client_build/build-`git rev-parse --short HEAD`.tgz
 
       - name: Deploy
         env:
