@@ -6,6 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import router from './routes';
 import logger from 'morgan';
+import cors from 'cors';
 import './passportConfig';
 
 const prisma = new PrismaClient();
@@ -29,9 +30,16 @@ const server = new GraphQLServer({
 server.express.use(logger('dev'));
 server.express.use(initialize());
 server.express.use(session());
+server.express.use(cors());
 
 server.express.use('/api', router);
 
-server.start({ port: PORT, endpoint: '/graphql', playground: '/graphql' }, () =>
-  console.log(`Server is running on http://localhost:${PORT}`)
+server.start(
+  {
+    port: PORT,
+    endpoint: '/graphql',
+    playground: '/graphql',
+    cors: { credentials: true, origin: '*' },
+  },
+  () => console.log(`Server is running on http://localhost:${PORT}`)
 );
