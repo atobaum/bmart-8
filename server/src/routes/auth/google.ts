@@ -8,12 +8,9 @@ router.get(
   '/callback',
   googleLoginCallback,
   (req: any, res: any, next: any) => {
-    res.status(HTTP_STATUS.SUCCESS).json({
-      status: HTTP_STATUS.SUCCESS,
-      msg: 'login success',
-      user: req.user,
-      token: req.authInfo.token,
-    });
+    res.redirect(
+      `http://localhost:3000/loginCallback?token=${req.authInfo.token}`
+    );
   }
 );
 
