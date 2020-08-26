@@ -7,16 +7,14 @@ import { Query } from 'react-apollo';
 import getRandomInt from '../../utils/random';
 
 const ProductHowAboutBlock = styled.div`
-  margin-top: 0.3rem;
   .ProductTitle {
-    padding: 1rem;
+    padding: 0.5rem;
     background-color: white;
     text-align: left;
     font-weight: bold;
   }
   .ProductInfo {
     max-width: 100vw;
-    margin-bottom: 0.3rem;
     display: flex;
     flex-wrap: nowrap;
     background-color: white;
