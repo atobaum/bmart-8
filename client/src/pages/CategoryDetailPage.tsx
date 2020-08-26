@@ -16,7 +16,7 @@ const CategoryDetailPage: React.FC<any> = ({ match }: any) => {
   return (
     <CategoryDetailBlock>
       <CategoryHeader type={type} id={q}></CategoryHeader>
-      <CategoryProduct id={q}></CategoryProduct>
+      <CategoryProduct type={type} id={q}></CategoryProduct>
     </CategoryDetailBlock>
   );
 };

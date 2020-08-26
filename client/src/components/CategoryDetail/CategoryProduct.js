@@ -23,12 +23,25 @@ const CategoryProductBlock = styled.div`
   }
 `;
 
-function CategoryProduct({ id }) {
+function CategoryProduct({ type, id }) {
   const [orderType, setOrderType] = useState('price');
   const [order, setOrder] = useState('desc');
 
-  function getOrderbyProductQuery() {
-    return gql`
+  let getOrderbyProductQuery=''
+  if(type==='second'){
+    getOrderbyProductQuery = gql`
+    query {
+      products(category_level: second, category_id: ${id}, order_type: ${orderType}, order:${order}) {
+        products {
+          name
+          price
+          img_url
+        }
+      }
+    }`;
+  }
+  else if(type==='third'){
+    getOrderbyProductQuery = gql`
     query {
       products(category_level: third, category_id: ${id}, order_type: ${orderType}, order:${order}) {
         products {
@@ -37,8 +50,7 @@ function CategoryProduct({ id }) {
           img_url
         }
       }
-    }
-  `;
+    }`;
   }
 
   function onChangeFilter(event) {
@@ -62,7 +74,7 @@ function CategoryProduct({ id }) {
     <CategoryProductBlock>
       <Filter onChange={onChangeFilter}></Filter>
       <div className="ProductInfo">
-        <Query query={getOrderbyProductQuery()}>
+        <Query query={getOrderbyProductQuery}>
           {({ data, loading, error }) => {
             if (loading || error) return '';
             return data.products.products.map((product, idx) => {
