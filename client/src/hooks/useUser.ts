@@ -1,12 +1,18 @@
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
-export default function useUser() {
+type UserInfo = {
+  email: String;
+  name: String;
+};
+
+export default function useUser(): UserInfo | null {
   const { data } = useQuery(
     gql`
       query {
         currentUser {
           email
+          name
         }
       }
     `,
@@ -15,5 +21,5 @@ export default function useUser() {
     }
   );
   if (data && data.currentUser) return data.currentUser;
-  else null;
+  else return null;
 }
