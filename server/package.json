@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=develop nodemon -e ts,graphql -x ts-node src/server.ts",
-    "start:ts-node": "ts-node ./src/server.ts"
+    "start:ts-node": "ts-node ./src/server.ts",
+    "start:build": "node ./build/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,20 +20,10 @@
   },
   "homepage": "https://github.com/woowa-techcamp-2020/bmart-8#readme",
   "dependencies": {
-    "@prisma/cli": "2.4.1",
-    "@prisma/client": "2.4.1",
-    "@types/cookie-parser": "^1.4.2",
-    "@types/jsonwebtoken": "^8.5.0",
-    "@types/lodash": "^4.14.159",
-    "@types/morgan": "^1.9.1",
-    "@types/node": "^14.0.27",
-    "@types/passport": "^1.0.4",
-    "@types/passport-google-oauth20": "^2.0.3",
-    "@types/passport-jwt": "^3.0.3",
+    "@prisma/client": "^2.5.1",
     "apollo-server": "^2.16.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "graphql-tools": "^6.0.18",
     "graphql-yoga": "^1.18.3",
@@ -41,12 +32,23 @@
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "passport-jwt": "^4.0.0",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
+    "passport-jwt": "^4.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@prisma/cli": "^2.5.1",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/lodash": "^4.14.159",
+    "@types/morgan": "^1.9.1",
+    "@types/node": "^14.0.27",
+    "@types/passport": "^1.0.4",
+    "@types/passport-google-oauth20": "^2.0.3",
+    "@types/passport-jwt": "^3.0.3",
+    "cross-env": "^7.0.2",
+    "nodemon": "^2.0.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^3.9.7"
+  }
 }
