@@ -1,0 +1,51 @@
+import React from 'react';
+import styled from 'styled-components';
+import { gql } from 'apollo-boost';
+import { Query } from 'react-apollo';
+import palette from '../../lib/styles/palette';
+
+const ThirdCategoryBlock = styled.div`
+  background-color:white;
+  height:auto;
+  margin-bottom:0.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+  div{
+    border-top: solid 0.01rem ${palette.gray200};
+    border-right: solid 0.01rem ${palette.gray200};
+    box-sizing: border-box;
+    width: 50%;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+`;
+
+function ThirdCategory({id}) {
+  let getSecondCategoryQuery=gql`
+    query {
+      secondCategory(id:${id}){
+        children{
+          name
+        }
+      }
+  }`
+
+  return (
+    <ThirdCategoryBlock>
+      <Query query={getSecondCategoryQuery}>
+        {({ data, loading, error }) => {
+          if (loading || error) return '';
+          console.log(data.secondCategory)
+          return data.secondCategory.children.map((product) => {
+            return (
+              <div>{product.name}</div>
+            );
+          });
+        }}
+      </Query>
+    </ThirdCategoryBlock>
+  );
+}
+export default ThirdCategory;
