@@ -4,6 +4,7 @@ import ProductInfo from '../common/ProductInfo';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 import getRandomInt from '../../../utils/random';
+import useUser from '../../../hooks/useUser';
 
 const ProductReadyForBlock = styled.div`
   margin-top: 0.3rem;
@@ -48,9 +49,13 @@ function ProductReadyFor() {
     }
   `;
 
+  const user = useUser();
+
   return (
     <ProductReadyForBlock>
-      <div className="ProductTitle">기진님을 위해 준비한 상품</div>
+      <div className="ProductTitle">
+        {`${user ? user.name + '님' : '당신'}을 위해 준비한 상품`}
+      </div>
       <div className="ProductInfo">
         <Query query={GetReadyProductQuery}>
           {({ data, loading, error }) => {
