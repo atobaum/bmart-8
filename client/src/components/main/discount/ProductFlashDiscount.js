@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import palette from '../../../lib/styles/palette';
-import { Query } from 'react-apollo';
-import getRandomInt from '../../../utils/random';
+import { Query, useMutation } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import More from '../common/More';
 import ProductPhoto from '../common/ProductPhoto';
@@ -10,6 +9,8 @@ import ProductDiscount from './ProductDiscount';
 import ProductContent from '../common/ProductContent';
 import Bag from '../common/Bag';
 import { GET_PRODUCT_SIMPLE } from '../main-query';
+import { gql } from 'apollo-boost';
+import { useCartDispatch, addCartItem } from '../../../stores/cart-store';
 
 const ProductFlashDiscountBlock = styled.div`
   .ProductTitle {
@@ -73,6 +74,24 @@ const cursor = getRandomInt(0, 7000);
 function ProductFlashDiscount() {
   const [select, setSelect] = useState(0);
 
+  const [addToCart, { data }] = useMutation(gql`
+    mutation addToCart($id: Int!) {
+      addToCart(productId: $id) {
+        id
+        product {
+          id
+          name
+          img_url
+          price
+          discount
+        }
+        createdAt
+        count
+      }
+    }
+  `);
+  const cartDispatch = useCartDispatch();
+
   function photoClick(index) {
     setSelect(index);
   }
@@ -119,7 +138,16 @@ function ProductFlashDiscount() {
                   <ProductContent
                     title={selectedProduct.name}
                     price={selectedProduct.price}
-                    id={selectedProduct.id}></ProductContent>
+                    id={selectedProduct.id}
+                    onAddCart={() => {
+                      addToCart({
+                        variables: {
+                          id: selectedProduct.id,
+                        },
+                      }).then((data) => {
+                        cartDispatch(addCartItem(data.data.addToCart));
+                      });
+                    }}></ProductContent>
                   <div className="Bag">
                     <Bag></Bag>
                   </div>
