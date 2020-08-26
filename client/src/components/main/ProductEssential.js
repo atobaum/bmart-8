@@ -2,10 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ProductInfo from './common/ProductInfo';
 import Refresh from './common/Refresh';
-
-import { Query } from 'react-apollo';
-import getRandomInt from '../../utils/random';
-import { GET_PRODUCT_SIMPLE } from './main-query';
+import useRandomProducts from './hooks/useRandomProducts';
 
 const ProductEssentialBlock = styled.div`
   .ProductTitle {
@@ -35,30 +32,25 @@ const ProductEssentialBlock = styled.div`
   }
 `;
 
-const cursor = getRandomInt(6546, 6607);
+// const cursor = getRandomInt(6546, 6607);
 
 function ProductEssential() {
+  const products = useRandomProducts(9);
   return (
     <ProductEssentialBlock>
       <div className="ProductTitle">지금 필요한 생필품!</div>
       <div className="ProductInfo">
-        <Query
-          query={GET_PRODUCT_SIMPLE}
-          variables={{ take: 9, cursor: cursor }}>
-          {({ data, loading, error }) => {
-            if (loading || error) return '';
-            return data.products.products.map((product, idx) => {
-              return (
-                <ProductInfo
-                  key={idx}
-                  id={product.id}
-                  title={product.name}
-                  price={product.price}
-                  url={product.img_url}></ProductInfo>
-              );
-            });
-          }}
-        </Query>
+        {products &&
+          products.map((product) => {
+            return (
+              <ProductInfo
+                key={product.id}
+                id={product.id}
+                title={product.name}
+                price={product.price}
+                url={product.img_url}></ProductInfo>
+            );
+          })}
       </div>
       <div className="Refresh">
         <Refresh title={'지금 필요한 생필품! '}></Refresh>
