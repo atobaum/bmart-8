@@ -1,0 +1,6 @@
+type User {
+  email: String
+}
+type Query {
+  currentUser: User
+}
