@@ -18,10 +18,6 @@ import SearchResultPage from './pages/SearchResultPage';
 import CategoryDetailPage from './pages/CategoryDetailPage';
 import { useCartDispatch } from './stores/cart-store';
 
-const client = new ApolloClient({
-  uri: '/graphql',
-});
-
 const AppBlock = styled.div`
   max-width: 100%;
   overflow-x: hidden;
