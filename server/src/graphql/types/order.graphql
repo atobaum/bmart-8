@@ -1,0 +1,40 @@
+type Query {
+  orders: [Order]
+  order(id: Int): Order
+}
+
+type Mutation {
+  CreateOrder(
+    status: Int
+    address: String
+    zipcode: String
+    name: String
+    phone_number: String
+  ): Order
+  DeleteOrder(id: Int!): Order
+  CreateOrderProduct(count: Int, order_id: Int, product_id: Int): OrderProduct
+  UpdateOrderProduct(id: Int!, count: Int): OrderProduct
+  DeleteOrderProduct(id: Int!): OrderProduct
+}
+
+type Order {
+  id: Int!
+  created_at: DateTime
+  status: Int
+  address: String
+  zipcode: String
+  name: String
+  phone_number: String
+  user: User
+  user_id: Int
+  order_product: [OrderProduct]
+}
+
+type OrderProduct {
+  id: Int
+  count: Int
+  order: Order
+  order_id: Int
+  product: Product
+  product_id: Int
+}
