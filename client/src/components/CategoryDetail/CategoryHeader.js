@@ -6,6 +6,7 @@ import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 import ArrowBack from '../ArrowBack';
 import SearchIcon from '@material-ui/icons/Search';
+import ProductHowAbout from '../CategoryDetail/ProductHowAbout'
 
 const CategoryHeaderBlock = styled.div`
   padding-top: 1rem;
@@ -17,7 +18,7 @@ const CategoryHeaderBlock = styled.div`
 
 function CategoryHeader({ type,id }) {
   let GetReadyProductQuery=''
-  if(type=='second'){
+  if(type==='second'){
     GetReadyProductQuery = gql`
       query{
         secondCategory(id:${id}){
@@ -25,7 +26,7 @@ function CategoryHeader({ type,id }) {
         }
       }`;
   }
-  else if(type=='third'){
+  else if(type==='third'){
     GetReadyProductQuery = gql`
       query{
         thirdCategory(id:${id}){
@@ -42,9 +43,9 @@ function CategoryHeader({ type,id }) {
       <Query query={GetReadyProductQuery}>
         {({ data, loading, error }) => {
           if (loading || error) return '';
-          if(type=='third'){
+          if(type==='third'){
             return <div className="Title">{data.thirdCategory.name}</div>;
-          }else if(type=='second'){
+          }else if(type==='second'){
             return <div className="Title">{data.secondCategory.name}</div>;
           }
         }}
@@ -52,6 +53,11 @@ function CategoryHeader({ type,id }) {
       <Link to={'/search/'}>
         <SearchIcon className="SearchIcon"></SearchIcon>
       </Link>
+      {
+        type==='second'
+        ?<ProductHowAbout></ProductHowAbout>
+        :''
+      }
     </CategoryHeaderBlock>
   );
 }
