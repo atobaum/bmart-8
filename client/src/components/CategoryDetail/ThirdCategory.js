@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 import palette from '../../lib/styles/palette';
@@ -11,7 +13,8 @@ const ThirdCategoryBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
   text-align: left;
-  div{
+
+  .Link {
     border-top: solid 0.01rem ${palette.gray200};
     border-right: solid 0.01rem ${palette.gray200};
     box-sizing: border-box;
@@ -19,6 +22,14 @@ const ThirdCategoryBlock = styled.div`
     padding-left: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    text-decoration: none;
+    color: black;
+    &:focus,
+    &:visited,
+    &:link,
+    &:active {
+      text-decoration: none;
+    }
   }
 `;
 
@@ -27,6 +38,7 @@ function ThirdCategory({id}) {
     query {
       secondCategory(id:${id}){
         children{
+          id
           name
         }
       }
@@ -40,7 +52,9 @@ function ThirdCategory({id}) {
           console.log(data.secondCategory)
           return data.secondCategory.children.map((product) => {
             return (
-              <div>{product.name}</div>
+              <Link className="Link" to={'/category/third/' + product.id}>
+                <div>{product.name}</div>
+              </Link>
             );
           });
         }}
