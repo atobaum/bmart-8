@@ -31,6 +31,8 @@ const ProductWhatEatBlock = styled.div`
     padding-bottom: 0.3rem;
   }
 `;
+
+// 국,반찬,메인요리
 // const cursor = getRandomInt(450, 500);
 
 function ProductWhatEat() {

@@ -32,6 +32,7 @@ const ProductEssentialBlock = styled.div`
   }
 `;
 
+// 생활용품,리빙 카테고리
 // const cursor = getRandomInt(6546, 6607);
 
 function ProductEssential() {
