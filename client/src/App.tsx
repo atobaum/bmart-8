@@ -77,10 +77,13 @@ function App() {
             <Route path="/search">
               <SearchPage />
             </Route>
+            <Route
+              path="/category/:type/:query"
+              component={CategoryDetailPage}
+            />
             <Route path="/loginCallback">
               <LoginCallbackPage />
             </Route>
-            <Route path="/category/:query" component={CategoryDetailPage} />
             <Route path="/">
               <MainPage />
             </Route>

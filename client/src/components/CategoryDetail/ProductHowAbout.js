@@ -7,16 +7,14 @@ import { Query } from 'react-apollo';
 import getRandomInt from '../../utils/random';
 
 const ProductHowAboutBlock = styled.div`
-  margin-top: 0.3rem;
   .ProductTitle {
-    padding: 1rem;
+    padding: 0.5rem;
     background-color: white;
     text-align: left;
     font-weight: bold;
   }
   .ProductInfo {
     max-width: 100vw;
-    margin-bottom: 0.3rem;
     display: flex;
     flex-wrap: nowrap;
     background-color: white;
@@ -32,19 +30,21 @@ const ProductHowAboutBlock = styled.div`
       padding-right: 0.5rem;
     }
   }
-`;
-const random = getRandomInt(0, 7000);
+`
 
-function ProductHowAbout() {
+function ProductHowAbout({index}) {
+  const random = getRandomInt(index, index-20);
   const GetReadyProductQuery = gql`
-  query {
-    product(take:9,skip:${random}) {
-      name
-      price
-      img_url
+    query {
+      products(take:9,cursor:${random}) {
+        products{
+          name
+          price
+          img_url
+        }
+      }
     }
-  }
-`;
+  `;
 
   return (
     <ProductHowAboutBlock>
@@ -53,8 +53,7 @@ function ProductHowAbout() {
         <Query query={GetReadyProductQuery}>
           {({ data, loading, error }) => {
             if (loading || error) return '';
-
-            return data.product.map((product, idx) => {
+            return data.products.products.map((product, idx) => {
               return (
                 <ProductInfo
                   key={idx}
