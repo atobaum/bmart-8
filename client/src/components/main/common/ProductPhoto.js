@@ -5,7 +5,8 @@ import WishButton from '../../WishButton';
 const ProductPhotoBlock = styled.div`
   border-radius: 0.2rem;
   width: 100%;
-  height: 7rem;
+  padding: ${(props) => props.padding || 0};
+  height: ${(props) => props.height || '7rem'};
   position: relative;
   box-sizing: border-box;
 
@@ -26,9 +27,20 @@ const ProductPhotoBlock = styled.div`
   }
 `;
 
-function ProductPhoto({ wishbutton, onClick, index, url, select = -1 }) {
+function ProductPhoto({
+  height,
+  padding,
+  wishbutton,
+  onClick,
+  index,
+  url,
+  select = -1,
+}) {
   return (
-    <ProductPhotoBlock className={select === index ? ' active' : ''}>
+    <ProductPhotoBlock
+      height={height}
+      padding={padding}
+      className={select === index ? ' active' : ''}>
       <img
         loading="lazy"
         alt="Thunbnail"
