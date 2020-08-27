@@ -57,18 +57,20 @@ function CategoryHeader({ type,id }) {
         </div>
         <Query query={GetReadyProductQuery}>
           {({ data, loading, error }) => {
+            let title
             if (loading || error) return '';
             if(type==='third'){
-              return <div className="Title">{data.thirdCategory.name}</div>;
+              title=data.thirdCategory.name
             }else if(type==='second'){
-              return <div className="Title">{data.secondCategory.name}</div>;
+              title=data.secondCategory.name
             }else if(type==='new_products'){
-              return <div className="Title">새로나왔어요</div>;
+              title='새로나왔어요'
             }else if(type==='top_saling'){
-              return <div className="Title">잘팔려요</div>;
+              title='잘팔려요'
             }else if(type==='flash_discount'){
-              return <div className="Title">할인해요</div>;
+              title='할인해요'
             }
+            return <div className="Title">{title}</div>;
           }}
         </Query>
         <Link to={'/search/'}>
