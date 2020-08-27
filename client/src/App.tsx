@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Switch, Route } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { useQuery } from 'react-apollo';
+import { useLazyQuery } from 'react-apollo';
 
 import CartPage from './pages/CartPage';
 import MainPage from './pages/MainPage';
@@ -19,20 +19,21 @@ import SearchResultPage from './pages/SearchResultPage';
 
 import CategoryDetailPage from './pages/CategoryDetailPage';
 import { useCartDispatch } from './stores/cart-store';
+import useUser from './hooks/useUser';
 
 const AppBlock = styled.div`
+  @import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap');
+  scroll-behavior: smooth;
   max-width: 100%;
-  overflow-x: hidden;
+  text-align: center;
   display: flex;
+  overflow-x: hidden;
   flex-direction: column;
-  .main-wrapper {
-    overflow: auto;
-    height: 90vh;
-  }
 `;
 
 function App() {
-  const { data: cartData } = useQuery(gql`
+  const user = useUser();
+  const [fetchCart, { data: cartData }] = useLazyQuery(gql`
     query {
       cart {
         id
@@ -56,41 +57,37 @@ function App() {
     if (cartData) cartDispatch({ type: 'INIT', payload: cartData.cart });
   }, [cartData, cartDispatch]);
 
+  if (user?.email) fetchCart();
+
   return (
     <AppBlock>
-      <div className="App">
-        <div className="main-wrapper">
-          <Switch>
-            <Route path="/categories">
-              <CategoryPage />
-            </Route>
-            <Route path="/cart">
-              <CartPage />
-            </Route>
-            <Route path="/profile">
-              <UserProfilePage />
-            </Route>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/search/:query" component={SearchResultPage} />
-            <Route path="/search">
-              <SearchPage />
-            </Route>
-            <Route
-              path="/category/:type/:query"
-              component={CategoryDetailPage}
-            />
-            <Route path="/loginCallback">
-              <LoginCallbackPage />
-            </Route>
-            <Route path="/">
-              <MainPage />
-            </Route>
-          </Switch>
-        </div>
-        <Footer />
-      </div>
+      <Switch>
+        <Route path="/categories">
+          <CategoryPage />
+        </Route>
+        <Route path="/cart">
+          <CartPage />
+        </Route>
+        <Route path="/profile">
+          <UserProfilePage />
+        </Route>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+        <Route path="/search/:query" component={SearchResultPage} />
+        <Route path="/search">
+          <SearchPage />
+        </Route>
+        <Route path="/category/:type/:query" component={CategoryDetailPage} />
+        <Route path="/main/:type" component={CategoryDetailPage} />
+        <Route path="/loginCallback">
+          <LoginCallbackPage />
+        </Route>
+        <Route path="/">
+          <MainPage />
+        </Route>
+      </Switch>
+      <Footer />
     </AppBlock>
   );
 }
