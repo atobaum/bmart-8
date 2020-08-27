@@ -57,7 +57,7 @@ function App() {
     if (cartData) cartDispatch({ type: 'INIT', payload: cartData.cart });
   }, [cartData, cartDispatch]);
 
-  if (user) fetchCart();
+  if (user?.email) fetchCart();
 
   return (
     <AppBlock>
