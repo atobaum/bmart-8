@@ -6,10 +6,10 @@ import Carousel from '../components/Carousel';
 import MainPageCategories from '../components/main/CategoryButton';
 import DeliveryAvailabilityIndicator from '../components/DeliveryAvailabilityIndicator';
 import PullToRefresh from '../components/PullToRefresh';
-import Category from '../components/main/Category';
 import { Helmet } from 'react-helmet';
 import useMainBanners from '../hooks/useMainBanners';
 import useIsScrollTop from '../hooks/useIsScrollTop';
+import CategoryContainer from '../components/main/category/CategoryContainer';
 
 const MainPageBlock = styled.div<{ isScrollTop: boolean }>`
   display: flex;
@@ -63,7 +63,7 @@ const MainPage: React.FC = () => {
       <DeliveryAvailabilityIndicator />
       <MainPageCategories></MainPageCategories>
       <Product></Product>
-      <Category></Category>
+      <CategoryContainer></CategoryContainer>
     </MainPageBlock>
   );
 };
