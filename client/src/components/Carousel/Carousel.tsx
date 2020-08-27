@@ -173,21 +173,27 @@ const Carousel: React.FC<CarouselProps> = ({ images, transitionTime }) => {
       <div className="wrapper" ref={containerRef}>
         <div>
           <Link to={lastBanner.routeUrl}>
-            <img src={lastBanner.imgUrl} alt={lastBanner.altString}></img>
+            <img
+              src={lastBanner.imgUrl}
+              alt={lastBanner.altString}
+              loading="lazy"></img>
           </Link>
         </div>
         {images.map(({ imgUrl, altString, routeUrl }, idx) => {
           return (
             <div key={idx}>
               <Link to={routeUrl}>
-                <img src={imgUrl} alt={altString}></img>
+                <img src={imgUrl} alt={altString} loading="lazy"></img>
               </Link>
             </div>
           );
         })}
         <div>
           <Link to={images[0].routeUrl}>
-            <img src={images[0].imgUrl} alt={images[0].altString}></img>
+            <img
+              src={images[0].imgUrl}
+              alt={images[0].altString}
+              loading="lazy"></img>
           </Link>
         </div>
       </div>
