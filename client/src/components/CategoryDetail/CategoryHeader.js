@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
-import ArrowBack from '../ArrowBack';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SearchIcon from '@material-ui/icons/Search';
 import ProductHowAbout from '../CategoryDetail/ProductHowAbout'
 import ThirdCategory from './ThirdCategory';
+import { useHistory } from 'react-router-dom';
 
 const CategoryHeaderBlock = styled.div`
   .Hedaer{
@@ -22,6 +23,8 @@ const CategoryHeaderBlock = styled.div`
 `;
 
 function CategoryHeader({ type,id }) {
+  const history = useHistory();
+
   let GetReadyProductQuery=''
   if(type==='second'){
     GetReadyProductQuery = gql`
@@ -31,7 +34,7 @@ function CategoryHeader({ type,id }) {
       }
     }`;
   }
-  else if(type==='third'){
+  else {
     GetReadyProductQuery = gql`
     query{
       thirdCategory(id:${id}){
@@ -52,17 +55,26 @@ function CategoryHeader({ type,id }) {
   return (
     <CategoryHeaderBlock>
       <div className="Hedaer">
-        <div className="ArrowBack">
-          <ArrowBack></ArrowBack>
-        </div>
+        <ArrowBackIcon
+          style={{ paddingLeft: '10px' }}
+          onClick={() => history.goBack()}
+        />
         <Query query={GetReadyProductQuery}>
           {({ data, loading, error }) => {
+            let title
             if (loading || error) return '';
             if(type==='third'){
-              return <div className="Title">{data.thirdCategory.name}</div>;
+              title=data.thirdCategory.name
             }else if(type==='second'){
-              return <div className="Title">{data.secondCategory.name}</div>;
+              title=data.secondCategory.name
+            }else if(type==='new_products'){
+              title='새로나왔어요'
+            }else if(type==='top_saling'){
+              title='잘팔려요'
+            }else if(type==='flash_discount'){
+              title='할인해요'
             }
+            return <div className="Title">{title}</div>;
           }}
         </Query>
         <Link to={'/search/'}>
