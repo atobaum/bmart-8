@@ -85,9 +85,10 @@ const Footer: React.FC<FooterProps> = () => {
           <LinkBlock to="/cart">
             <AddShoppingCartIcon></AddShoppingCartIcon>
             <div>
-              {/* 장바구니<div hidden={cart.length === 0}>{cart.length} 개</div> */}
               장바구니
-              <div className="cart-count-indicator">{cart.length}</div>
+              <div className="cart-count-indicator" hidden={cart.length === 0}>
+                {cart.length}
+              </div>
             </div>
           </LinkBlock>
         </li>
