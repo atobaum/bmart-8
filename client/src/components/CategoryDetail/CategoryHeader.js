@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
-import ArrowBack from '../ArrowBack';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SearchIcon from '@material-ui/icons/Search';
 import ProductHowAbout from '../CategoryDetail/ProductHowAbout'
 import ThirdCategory from './ThirdCategory';
+import { useHistory } from 'react-router-dom';
 
 const CategoryHeaderBlock = styled.div`
   .Hedaer{
@@ -22,6 +23,8 @@ const CategoryHeaderBlock = styled.div`
 `;
 
 function CategoryHeader({ type,id }) {
+  const history = useHistory();
+
   let GetReadyProductQuery=''
   if(type==='second'){
     GetReadyProductQuery = gql`
@@ -52,9 +55,10 @@ function CategoryHeader({ type,id }) {
   return (
     <CategoryHeaderBlock>
       <div className="Hedaer">
-        <div className="ArrowBack">
-          <ArrowBack></ArrowBack>
-        </div>
+        <ArrowBackIcon
+          style={{ paddingLeft: '10px' }}
+          onClick={() => history.goBack()}
+        />
         <Query query={GetReadyProductQuery}>
           {({ data, loading, error }) => {
             let title
