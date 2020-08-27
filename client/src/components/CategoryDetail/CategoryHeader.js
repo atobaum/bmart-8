@@ -31,7 +31,7 @@ function CategoryHeader({ type,id }) {
       }
     }`;
   }
-  else if(type==='third'){
+  else {
     GetReadyProductQuery = gql`
     query{
       thirdCategory(id:${id}){
@@ -62,6 +62,12 @@ function CategoryHeader({ type,id }) {
               return <div className="Title">{data.thirdCategory.name}</div>;
             }else if(type==='second'){
               return <div className="Title">{data.secondCategory.name}</div>;
+            }else if(type==='new_products'){
+              return <div className="Title">새로나왔어요</div>;
+            }else if(type==='top_saling'){
+              return <div className="Title">잘팔려요</div>;
+            }else if(type==='flash_discount'){
+              return <div className="Title">할인해요</div>;
             }
           }}
         </Query>
