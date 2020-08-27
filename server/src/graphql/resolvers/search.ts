@@ -47,6 +47,22 @@ export default {
       });
       return data.body.hits.hits.map((i: any) => i._source.name);
     },
+    searchProducts: async (_: any, { query }: any) => {
+      if (!query || query.length === 0) return [];
+
+      const data = await elasticsearchClient.search({
+        index: 'bmart',
+        body: {
+          query: {
+            multi_match: {
+              query: query,
+              fields: ['name', 'content'],
+            },
+          },
+        },
+      });
+      return data.body.hits.hits.map((i: any) => ({ ...i._source, id: i._id }));
+    },
   },
 
   Mutation: {
